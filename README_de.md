@@ -21,6 +21,32 @@ migrieren -> bei Umgebungswechsel neu suchen. **Kein zweiter Resolver:** wo
 Nur im isolierten Fall laeuft eine mitgebrachte Minimalfassung derselben
 Stufenordnung -- nachweislich formgleich, siehe `tests/test_ladder_parity.py`.
 
+## Für wen das gedacht ist -- primär für Skills, nicht für Module
+
+Nachgemessen, nicht angenommen: Die 32 Bundle-Manifeste deklarieren 94 Skills
+als `ref: skill:<name>` mit `version: registry-current` (neben 115 Modulen) --
+die Beziehung Modul/Bundle -> Skill ist also bereits deklariert, nur auf
+Bundle-Ebene, nicht im Modul-Manifest selbst.
+
+**Der primäre Adressat ist der Skill, nicht das Modul.** Ein Modul wird
+*komponiert* -- jemand entscheidet, was zusammengehört, und das
+Bundle-Manifest hält es fest; seine Umgebung ist damit weitgehend bekannt.
+Ein Skill wird *verteilt* -- er landet bei irgendwem, in irgendeiner
+Umgebung, und muss sie zur Laufzeit herausfinden. Deshalb kann das eine
+deklarieren, was das andere erkunden muss.
+
+Zwei Präzisierungen, damit das nicht als „Module brauchen das nie" gelesen
+wird:
+
+- Ein **einzeln verwendetes Modul** (ohne Bundle, bei einem fremden Nutzer)
+  ist in genau derselben Lage wie ein Skill -- der Seed hilft ihm dann
+  ebenso. Der *Regelfall* ist aber der Skill.
+- Die Anforderung, die daraus folgt, ist **Variabilität**: Beim Skill ist die
+  Bandbreite möglicher Umgebungen am größten. Das ist der Grund, warum die
+  Stufenordnung bis zu „ehrlich leer" durchgehen muss und nicht bei „Modul
+  nicht gefunden" aufhören darf (Team-lead-Beobachtung, 2026-08-15, reiner
+  Dokunachtrag -- keine Code-Änderung).
+
 ## Warum kopieren hier richtig ist
 
 Die Faustregel aus dem Connector-Ticket ("was sich beim Kopieren unbemerkt

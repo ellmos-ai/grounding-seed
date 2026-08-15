@@ -21,6 +21,30 @@ search again on environment change. **No second resolver:** wherever
 the isolated case does a bundled minimal version of the same staging order run --
 provably shape-identical, see `tests/test_ladder_parity.py`.
 
+## Who this is for -- primarily skills, not modules
+
+Measured, not assumed: the 32 bundle manifests declare 94 skills as
+`ref: skill:<name>` with `version: registry-current` (alongside 115 modules) --
+the module/bundle -> skill relationship is already declared, just at bundle
+level, not in the module's own manifest.
+
+**The primary addressee is the skill, not the module.** A module gets
+*composed* -- someone decides what belongs together, and the bundle manifest
+records it; its environment is therefore largely known in advance. A skill
+gets *distributed* -- it lands with whoever, in whatever environment, and has
+to find that out at runtime. That's why one side can declare what the other
+has to discover.
+
+Two clarifications so this isn't read as "modules never need it":
+
+- A module used **standalone** (no bundle, with an unfamiliar user) is in
+  exactly the same position as a skill -- the seed helps it just as much.
+  The *common case*, though, is the skill.
+- The requirement that follows is **variability**: for a skill, the range of
+  possible environments is widest. That's why the staging order has to run
+  all the way to "honestly empty" and can't stop at "module not found"
+  (team-lead observation, 2026-08-15, doc-only addendum -- no code change).
+
 ## Why copying is correct here
 
 The rule of thumb from the connector ticket ("what can silently diverge when
