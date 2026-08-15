@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "grounding-seed"
+version = "0.1.0"
+description = "Standalone-Bootstrap-Template fuer isolierte Module/Skills/Repos -- Selbstkenntnis, Suche, eigener Speicher, Nutzerfrage, Selbstversorgung, Migration bei Fund."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Lukas Geiger" }]
+keywords = ["bootstrap", "standalone", "isolated-module", "self-provisioning", "ellmos"]
+
+[project.scripts]
+grounding-seed = "grounding_seed.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120

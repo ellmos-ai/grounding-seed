@@ -1,0 +1,52 @@
+{
+  "schema": "ellmos.module.v2",
+  "id": "grounding-seed",
+  "display_name": "grounding-seed",
+  "category": "control",
+  "kind": "library",
+  "status": "active",
+  "visibility": "public",
+  "provides": [
+    "bootstrap.standalone",
+    "bootstrap.self-knowledge",
+    "bootstrap.migration"
+  ],
+  "requires": [],
+  "optional": [
+    "source-resolver"
+  ],
+  "conflicts": [],
+  "surfaces": [
+    "library",
+    "cli"
+  ],
+  "state": {
+    "ownership": "module",
+    "location": "per-module-copy"
+  },
+  "boundaries": {
+    "network": "none",
+    "data": "user-local",
+    "platforms": [
+      "windows",
+      "macos",
+      "linux"
+    ]
+  },
+  "source_of_truth": {
+    "type": "git-repository",
+    "path": ".",
+    "repository": "not-yet-published -- lokaler Plan-D-Klon C:\\_Local_DEV\\repos\\grounding-seed, kein GitHub-Remote angelegt (kein Nutzerauftrag dafuer)"
+  },
+  "adapters": [
+    {
+      "id": "source-resolver-delegation",
+      "target": "source-resolver",
+      "status": "optional",
+      "note": "Wo source_resolver importierbar ist, delegiert grounding_seed.ladder.resolve() vollstaendig dorthin (kein zweiter Resolver). Die hier mitgebrachte Minimalfassung laeuft nur, wenn dieser Import fehlschlaegt -- form-identisch getestet in tests/test_ladder_parity.py."
+    }
+  ],
+  "rollenteilung_zu_source_resolver": {
+    "hinweis": "source-resolver = Aufloesungs-Engine (welche Komponente erfuellt Rolle X). grounding-seed = Lebenszyklus drumherum (Bedarf erkennen -> suchen -> verbinden -> selbst anlegen -> migrieren -> bei Umgebungswechsel neu suchen), primaer fuer den isolierten (nicht-Oekosystem-) Fall gedacht. Zwei Module, eine Rollen-Vokabel -- kein Namenskonflikt, keine Ueberschneidung der Zustaendigkeit."
+  }
+}
