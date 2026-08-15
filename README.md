@@ -46,6 +46,16 @@ actually checks each need and returns one of three states -- `found` | `empty`
 three-way split connects directly to T-20260815-205101335: a skill that doesn't
 know its own need can't distinguish `empty` from `unavailable` at all.
 
+**`assess()` itself never invents `empty` (fixed in 0.2.0).** `resolve()` only
+answers *where* something is, never *what's* there -- "no role could be
+located" means "I don't even know where to ask", which is `unavailable`, not
+a checked emptiness. So the `resolver` callable passed to `assess()` must
+supply the final found/empty/unavailable verdict itself; `empty` can only be
+set by a caller that successfully located a role AND then actually read its
+content. For the common case of "I only want to know if a role resolves, I'm
+not reading content", use `status_from_resolution()` -- it returns
+`found`/`unavailable` only, by construction never `empty`.
+
 ### 2. Sensing -- no code of its own, just a statement of fact
 
 *"I need senses -- the model that runs the skill."* The skill has no runtime of

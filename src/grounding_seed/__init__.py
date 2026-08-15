@@ -14,10 +14,17 @@ tests/test_ladder_parity.py.
 
 from grounding_seed.ladder import Stufe, ResolutionStatus, ResolutionResult, resolve
 from grounding_seed.location import detect_ecosystem
-from grounding_seed.self_knowledge import Need, NeedStatus, NeedAssessment, GroundingReport, assess
+from grounding_seed.self_knowledge import (
+    Need,
+    NeedStatus,
+    NeedAssessment,
+    GroundingReport,
+    assess,
+    status_from_resolution,
+)
 from grounding_seed.store import LocalStore
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 TEMPLATE_NAME = "grounding-seed"
 
 # Welche source-resolver CONTRACT_VERSION diese Minimalfassung nachbildet (siehe
@@ -44,6 +51,7 @@ __all__ = [
     "NeedAssessment",
     "GroundingReport",
     "assess",
+    "status_from_resolution",
     "LocalStore",
     "__version__",
     "TEMPLATE_NAME",

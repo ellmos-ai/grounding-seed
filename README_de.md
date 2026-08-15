@@ -48,6 +48,16 @@ Diese Dreiteilung ist der direkte Anschluss an T-20260815-205101335: ein Skill,
 der seinen Bedarf nicht kennt, kann `empty` und `unavailable` gar nicht
 unterscheiden.
 
+**`assess()` erfindet `empty` nie selbst (korrigiert in 0.2.0).** `resolve()`
+beantwortet nur WO etwas ist, nie WAS dort drinsteht -- "keine Rolle verortet"
+heisst "ich weiss nicht, wohin ich fragen soll", also `unavailable`, kein
+geprueftes Leer. Der `resolver`-Callable, der an `assess()` uebergeben wird,
+muss deshalb selbst den fertigen found/empty/unavailable-Wert liefern;
+`empty` darf nur setzen, wer eine Rolle erfolgreich verortet UND danach den
+Inhalt tatsaechlich gelesen hat. Fuer den haeufigen Fall "ich will nur wissen,
+ob eine Rolle verortet werden kann, ohne Inhalt zu lesen" gibt es
+`status_from_resolution()` -- liefert konstruktionsbedingt nie `empty`.
+
 ### 2. Sensorik -- kein eigener Code, sondern eine Feststellung
 
 *"Ich brauche Sensoren -- das Modell, das den Skill betreibt."* Der Skill hat
