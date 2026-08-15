@@ -4,6 +4,14 @@
 > ist dieses Template: es wird in ein isoliertes Modul/Skill/Repo kopiert und macht
 > es dort -- auch OHNE unser Oekosystem -- lauffaehig.
 
+**Leitbild: Kulturlandschaft statt Wildblume.** Ein Skill muss allein
+ueberlebensfaehig sein -- das ist die Standalone-Anforderung dieses Templates.
+Aber das Ziel ist nicht Vereinzelung: Wo Infrastruktur da ist, bilden die Module
+ein gemeinsam versorgtes Beet. Beides zugleich, allein lebensfaehig und im
+Verbund ertragreicher (Team-lead-Formulierung, Nachtrag zu T-20260815-371628859,
+2026-08-15 -- als Bildspender gekennzeichnet, hier als knappste Fassung des
+Gesamtziels uebernommen).
+
 **Verhaeltnis zu [`source-resolver`](https://github.com/ellmos-ai/source-resolver):**
 `source-resolver` beantwortet EINE Frage: "welche Komponente erfuellt hier Rolle X?"
 -- die Aufloesungs-Engine. `grounding-seed` ist der LEBENSZYKLUS drumherum: Bedarf

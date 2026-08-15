@@ -4,6 +4,14 @@
 > what this template is: copied into an isolated module/skill/repo, it makes it
 > runnable there -- even WITHOUT our ecosystem.
 
+**Guiding principle: cultivated landscape, not wildflower.** A skill must be able
+to survive alone -- that's this template's standalone requirement. But the goal
+isn't isolation: where infrastructure exists, modules form a jointly tended bed.
+Both at once -- viable alone, more productive together (team-lead's phrasing,
+addendum to T-20260815-371628859, 2026-08-15 -- marked as non-binding
+inspirational material, adopted here as the tightest statement of the overall
+goal so far).
+
 **Relationship to [`source-resolver`](https://github.com/ellmos-ai/source-resolver):**
 `source-resolver` answers ONE question: "which component fulfills role X here?" --
 it's the resolution engine. `grounding-seed` is the LIFECYCLE around it: recognize
