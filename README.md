@@ -1,3 +1,5 @@
+<img src="assets/banner.png" width="100%" alt="grounding-seed banner">
+
 # grounding-seed
 
 > A seed carries everything it needs to germinate in unknown soil. That's exactly

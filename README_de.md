@@ -1,3 +1,5 @@
+<img src="assets/banner.png" width="100%" alt="grounding-seed Banner">
+
 # grounding-seed
 
 > Ein Samen bringt mit, was er zum Keimen in unbekanntem Boden braucht. Genau das
