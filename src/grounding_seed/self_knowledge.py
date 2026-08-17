@@ -30,8 +30,8 @@ benannte Uebersetzung -- keine eingebaute, aber falsche Annahme mehr.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable
 
 
 class NeedStatus:
@@ -121,7 +121,7 @@ def assess(
     for need in needs:
         try:
             result = resolver(need.rolle)
-        except Exception as error:  # pragma: no cover -- defensiv, Resolver darf nicht crashen
+        except Exception as error:  # noqa: BLE001 -- defensiv, Resolver darf nicht crashen (pragma: no cover)
             assessments.append(NeedAssessment(
                 rolle=need.rolle, status=NeedStatus.UNAVAILABLE, quelle=None,
                 nachricht=f"Resolver-Aufruf fuer '{need.rolle}' fehlgeschlagen: {error}",

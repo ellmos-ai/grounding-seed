@@ -1,4 +1,4 @@
-from grounding_seed.store import LocalStore, RoleEntry, now_iso, SCHEMA_ID
+from grounding_seed.store import SCHEMA_ID, LocalStore, RoleEntry, now_iso
 
 
 def test_root_is_required_no_global_default(tmp_path):

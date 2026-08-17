@@ -2,6 +2,14 @@
 
 # grounding-seed
 
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Ecosystem: ellmos--ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
+[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2053%2F53%20Passing-brightgreen.svg)](tests/)
+
+> [!NOTE]
+> **AI & LLM Integration Notice**: This repository includes an [`llms.txt`](llms.txt) index file tailored for automated context ingestion, agentic system prompts, and LLM code understanding.
+
 > A seed carries everything it needs to germinate in unknown soil. That's exactly
 > what this template is: copied into an isolated module/skill/repo, it makes it
 > runnable there -- even WITHOUT our ecosystem.
@@ -133,7 +141,7 @@ wait state.
 *"Memory, memory change arise from searching."* Important: it's a RESULT, not a
 precondition -- the root forms while growing. Technically: `store.py` (a find
 becomes stage 0) and the version stamp `template_stamp()`
-(`grounding-seed@0.1.0`) carried by every copy, so it can later be determined
+(`grounding-seed@0.2.0`) carried by every copy, so it can later be determined
 which repos carry an old version.
 
 ### 8. Transplanting, part 1: cheap detection -- `transplant.py`

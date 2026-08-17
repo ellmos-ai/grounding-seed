@@ -1,0 +1,25 @@
+# ellmos-ai / grounding-seed
+
+> Standalone-Bootstrap-Template for isolated modules/skills/repos: self-knowledge, search, own storage, user question, self-provisioning, migration on find.
+
+Last-checked: 2026-08-17
+Test-suite: 53/53 passed (pytest, Python 3.12)
+
+## Summary
+
+`grounding-seed` gives a module, skill, or repo the lifecycle it needs to survive when copied into unknown soil: recognize a need, search for a canonical source, connect to it, self-provision a minimal local store when nothing is found, and migrate later if the environment changes. Where [`source-resolver`](https://github.com/ellmos-ai/source-resolver) is importable, `grounding-seed` delegates to it fully; the bundled minimal staging order runs only in the fully isolated case, and is provably shape-identical to `source-resolver`'s ladder (see `tests/test_ladder_parity.py`).
+
+## Key Features & Architecture
+
+- **Ten-phase plant metaphor as structure, not illustration**: the module's sections follow the actual lifecycle phases (root, self-knowledge, discovery, connection, self-provisioning, migration, ...).
+- **No second resolver**: delegates to `source_resolver` when present; the bundled ladder exists only for the isolated case and is contract-verified against it.
+- **Primary addressee is the skill, not the module**: a module's environment is largely known in advance (composed via bundle manifest); a skill is distributed into unknown environments and must discover its own sources at runtime.
+- **Local store**: self-provisioned storage when no canonical source is found, with later migration support.
+
+## Primary Documentation & References
+
+- [README.md](file:///README.md): Full plant-metaphor structure, relationship to `source-resolver`, standalone-copy rationale.
+- [README_de.md](file:///README_de.md): German translation.
+- [CHANGELOG.md](file:///CHANGELOG.md): Version history, including the 0.2.0 status-contract fix.
+- [pyproject.toml](file:///pyproject.toml): Package metadata, entry point (`grounding-seed` CLI), dependencies.
+- [ellmos-module.v2.json](file:///ellmos-module.v2.json): Module manifest for the ellmos catalog/bundle system.

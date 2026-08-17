@@ -4,12 +4,13 @@ gleiches Stufe/Status-Vokabular, gleiche dialog-Struktur bei Stufe 4. Ohne diese
 Beweis waere "ein Skill verhaelt sich in beiden Betriebsarten gleich" nur eine
 Behauptung, keine getestete Eigenschaft (advisor-Review 2026-08-15)."""
 
-import grounding_seed.ladder as gs_ladder
 import source_resolver.ladder as sr_ladder
-from grounding_seed.ladder import resolve as gs_resolve
-from grounding_seed.store import LocalStore as GsLocalStore
 from source_resolver.ladder import resolve as sr_resolve
 from source_resolver.store import UserSourceStore as SrStore
+
+import grounding_seed.ladder as gs_ladder
+from grounding_seed.ladder import resolve as gs_resolve
+from grounding_seed.store import LocalStore as GsLocalStore
 
 
 def _force_isolated(monkeypatch):
@@ -45,8 +46,9 @@ def test_not_found_dialog_shape_identical(tmp_path, monkeypatch):
 
 def test_stufe0_result_shape_identical(tmp_path, monkeypatch):
     _force_isolated(monkeypatch)
-    from grounding_seed.ladder import confirm as gs_confirm
     from source_resolver.ladder import confirm as sr_confirm
+
+    from grounding_seed.ladder import confirm as gs_confirm
 
     gs_store = GsLocalStore(tmp_path / "gs")
     sr_store = SrStore(tmp_path / "sr" / "config.json")
@@ -67,8 +69,9 @@ def test_stufe0_result_shape_identical(tmp_path, monkeypatch):
 def test_confirm_requires_explicit_stufe_herkunft_in_both(tmp_path):
     """Regressionsanker fuer den beim Testlauf gefundenen Signatur-Drift: beide
     confirm()-Funktionen muessen stufe_herkunft VERLANGEN, kein stiller Default."""
-    from grounding_seed.ladder import confirm as gs_confirm
     from source_resolver.ladder import confirm as sr_confirm
+
+    from grounding_seed.ladder import confirm as gs_confirm
 
     gs_store = GsLocalStore(tmp_path / "gs2")
     sr_store = SrStore(tmp_path / "sr2" / "config.json")

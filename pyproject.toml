@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "grounding-seed"
-version = "0.1.0"
+version = "0.2.0"
 description = "Standalone-Bootstrap-Template fuer isolierte Module/Skills/Repos -- Selbstkenntnis, Suche, eigener Speicher, Nutzerfrage, Selbstversorgung, Migration bei Fund."
 readme = "README.md"
 requires-python = ">=3.10"

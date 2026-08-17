@@ -12,13 +12,13 @@ Minimalfassung derselben Stufenordnung -- geprueft auf Ergebnis-Gleichheit in
 tests/test_ladder_parity.py.
 """
 
-from grounding_seed.ladder import Stufe, ResolutionStatus, ResolutionResult, resolve
+from grounding_seed.ladder import ResolutionResult, ResolutionStatus, Stufe, resolve
 from grounding_seed.location import detect_ecosystem
 from grounding_seed.self_knowledge import (
-    Need,
-    NeedStatus,
-    NeedAssessment,
     GroundingReport,
+    Need,
+    NeedAssessment,
+    NeedStatus,
     assess,
     status_from_resolution,
 )
@@ -41,20 +41,20 @@ def template_stamp() -> str:
 
 
 __all__ = [
-    "Stufe",
-    "ResolutionStatus",
-    "ResolutionResult",
-    "resolve",
-    "detect_ecosystem",
-    "Need",
-    "NeedStatus",
-    "NeedAssessment",
-    "GroundingReport",
-    "assess",
-    "status_from_resolution",
-    "LocalStore",
-    "__version__",
-    "TEMPLATE_NAME",
     "SOURCE_RESOLVER_CONTRACT_VERSION",
+    "TEMPLATE_NAME",
+    "GroundingReport",
+    "LocalStore",
+    "Need",
+    "NeedAssessment",
+    "NeedStatus",
+    "ResolutionResult",
+    "ResolutionStatus",
+    "Stufe",
+    "__version__",
+    "assess",
+    "detect_ecosystem",
+    "resolve",
+    "status_from_resolution",
     "template_stamp",
 ]

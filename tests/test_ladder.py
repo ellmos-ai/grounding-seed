@@ -1,7 +1,6 @@
-from pathlib import Path
 
 import grounding_seed.ladder as gs_ladder
-from grounding_seed.ladder import Stufe, ResolutionStatus, confirm, resolve
+from grounding_seed.ladder import ResolutionStatus, Stufe, confirm, resolve
 from grounding_seed.store import LocalStore, RoleEntry, now_iso
 
 

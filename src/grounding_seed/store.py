@@ -45,7 +45,7 @@ class RoleEntry:
         }
 
     @staticmethod
-    def from_dict(data: dict[str, Any]) -> "RoleEntry":
+    def from_dict(data: dict[str, Any]) -> RoleEntry:
         return RoleEntry(
             rolle=data["rolle"], aktiv=bool(data.get("aktiv", True)),
             quelle=data.get("quelle", {}), stufe=int(data.get("stufe", 0)),

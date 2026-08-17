@@ -1,4 +1,3 @@
-from pathlib import Path
 
 from grounding_seed.location import detect_ecosystem
 

@@ -2,6 +2,14 @@
 
 # grounding-seed
 
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Ecosystem: ellmos--ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
+[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2053%2F53%20Passing-brightgreen.svg)](tests/)
+
+> [!NOTE]
+> **LLM/KI-Kontext-Index:** Eine maschinenlesbare Spezifikation für KI-Agenten befindet sich in [`llms.txt`](llms.txt).
+
 > Ein Samen bringt mit, was er zum Keimen in unbekanntem Boden braucht. Genau das
 > ist dieses Template: es wird in ein isoliertes Modul/Skill/Repo kopiert und macht
 > es dort -- auch OHNE unser Oekosystem -- lauffaehig.
@@ -136,7 +144,7 @@ aussen, nicht von einem eigenen Wartezustand.
 *"Bei Suche entsteht: Gedaechtnis, Gedaechtnisaenderung."* Wichtig: es ist
 ERGEBNIS, nicht Vorbedingung -- die Wurzel bildet sich beim Wachsen. Technisch:
 `store.py` (Fund -> Stufe 0) und der Versionsstempel `template_stamp()`
-(`grounding-seed@0.1.0`) in jeder Kopie, damit sich spaeter feststellen laesst,
+(`grounding-seed@0.2.0`) in jeder Kopie, damit sich spaeter feststellen laesst,
 welche Repos einen alten Stand tragen.
 
 ### 8. Verpflanzung, Teil 1: billige Erkennung -- `transplant.py`
