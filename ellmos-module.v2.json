@@ -22,7 +22,7 @@
   ],
   "state": {
     "ownership": "module",
-    "location": "per-module-copy"
+    "location": "project"
   },
   "boundaries": {
     "network": "none",

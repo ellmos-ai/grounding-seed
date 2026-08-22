@@ -5,7 +5,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Ecosystem: ellmos--ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
-[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2053%2F53%20Passing-brightgreen.svg)](tests/)
+[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2054%2F54%20Passing-brightgreen.svg)](tests/)
 
 > [!NOTE]
 > **AI & LLM Integration Notice**: This repository includes an [`llms.txt`](llms.txt) index file tailored for automated context ingestion, agentic system prompts, and LLM code understanding.
@@ -222,7 +222,7 @@ grounding-seed --root ./.grounding-seed scan --program ffmpeg
 python -m pytest tests/ -q
 ```
 
-45/45 green (as of 2026-08-15), including `test_ladder_parity.py` -- the proof
+54/54 green (as of 2026-08-22), including `test_ladder_parity.py` -- the proof
 that the isolated minimal version produces the same result shape as
 `source_resolver.ladder` (stage values, status vocabulary, `dialog` structure,
 `confirm()` signature).

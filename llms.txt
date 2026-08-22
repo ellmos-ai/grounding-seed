@@ -2,8 +2,8 @@
 
 > Standalone-Bootstrap-Template for isolated modules/skills/repos: self-knowledge, search, own storage, user question, self-provisioning, migration on find.
 
-Last-checked: 2026-08-17
-Test-suite: 53/53 passed (pytest, Python 3.12)
+Last-checked: 2026-08-22
+Test-suite: 54/54 passed (pytest, Python 3.12)
 
 ## Summary
 

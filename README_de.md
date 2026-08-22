@@ -5,7 +5,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Ecosystem: ellmos--ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
-[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2053%2F53%20Passing-brightgreen.svg)](tests/)
+[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2054%2F54%20Passing-brightgreen.svg)](tests/)
 
 > [!NOTE]
 > **LLM/KI-Kontext-Index:** Eine maschinenlesbare Spezifikation für KI-Agenten befindet sich in [`llms.txt`](llms.txt).
@@ -225,6 +225,6 @@ grounding-seed --root ./.grounding-seed scan --program ffmpeg
 python -m pytest tests/ -q
 ```
 
-45/45 gruen (Stand 2026-08-15), inklusive `test_ladder_parity.py` -- dem Beweis,
+54/54 grün (Stand 2026-08-22), inklusive `test_ladder_parity.py` -- dem Beweis,
 dass die isolierte Minimalfassung dieselbe Ergebnisform wie `source_resolver.ladder`
 produziert (Stufe-Werte, Status-Vokabular, `dialog`-Struktur, `confirm()`-Signatur).

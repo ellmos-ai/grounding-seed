@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+- Der Modulkatalogvertrag wird wieder eingehalten: `state.location` verwendet
+  nun den zulässigen Wert `project`, passend zum dokumentierten, vom Aufrufer
+  übergebenen projekt-/modullokalen Zustandsroot. 54/54 Tests grün.
+
 ## [0.2.0] - 2026-08-15
 
 Befund aus dem ersten echten Anwendungsfall (T-20260815-205101335,
