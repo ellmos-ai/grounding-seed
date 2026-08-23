@@ -41,6 +41,7 @@
   "repository": "https://github.com/ellmos-ai/grounding-seed",
   "adapters": [
     {
+      "type": "seam",
       "id": "source-resolver-delegation",
       "target": "source-resolver",
       "status": "optional",
