@@ -17,7 +17,11 @@ def test_manifest_state_matches_documented_project_store():
 
     assert manifest["state"] == {"ownership": "module", "location": "project"}
     assert source["path"] == "."
-    assert source["repository"] == manifest["repository"]
+    # `repository` stand frueher zusaetzlich auf der Wurzelebene; das Manifest-Schema
+    # laesst dort keine Zusatzfelder zu. Geprueft wird deshalb die verbliebene, alleinige
+    # Quelle statt der Uebereinstimmung zweier Kopien.
+    assert source["repository"], "source_of_truth.repository muss gesetzt sein"
+    assert "repository" not in manifest, "keine Dublette auf der Wurzelebene"
     assert "<module-dir>/.grounding-seed/" in (ROOT / "README.md").read_text(
         encoding="utf-8"
     )

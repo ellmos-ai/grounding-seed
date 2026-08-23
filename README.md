@@ -226,3 +226,7 @@ python -m pytest tests/ -q
 that the isolated minimal version produces the same result shape as
 `source_resolver.ladder` (stage values, status vocabulary, `dialog` structure,
 `confirm()` signature).
+
+## Abgrenzung zu source-resolver
+
+source-resolver = Aufloesungs-Engine (welche Komponente erfuellt Rolle X). grounding-seed = Lebenszyklus drumherum (Bedarf erkennen -> suchen -> verbinden -> selbst anlegen -> migrieren -> bei Umgebungswechsel neu suchen), primaer fuer den isolierten (nicht-Oekosystem-) Fall gedacht. Zwei Module, eine Rollen-Vokabel -- kein Namenskonflikt, keine Ueberschneidung der Zustaendigkeit.

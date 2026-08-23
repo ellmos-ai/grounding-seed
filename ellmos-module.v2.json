@@ -38,7 +38,6 @@
     "path": ".",
     "repository": "https://github.com/ellmos-ai/grounding-seed"
   },
-  "repository": "https://github.com/ellmos-ai/grounding-seed",
   "adapters": [
     {
       "type": "seam",
@@ -47,8 +46,5 @@
       "status": "optional",
       "note": "Wo source_resolver importierbar ist, delegiert grounding_seed.ladder.resolve() vollstaendig dorthin (kein zweiter Resolver). Die hier mitgebrachte Minimalfassung laeuft nur, wenn dieser Import fehlschlaegt -- form-identisch getestet in tests/test_ladder_parity.py."
     }
-  ],
-  "rollenteilung_zu_source_resolver": {
-    "hinweis": "source-resolver = Aufloesungs-Engine (welche Komponente erfuellt Rolle X). grounding-seed = Lebenszyklus drumherum (Bedarf erkennen -> suchen -> verbinden -> selbst anlegen -> migrieren -> bei Umgebungswechsel neu suchen), primaer fuer den isolierten (nicht-Oekosystem-) Fall gedacht. Zwei Module, eine Rollen-Vokabel -- kein Namenskonflikt, keine Ueberschneidung der Zustaendigkeit."
-  }
+  ]
 }
