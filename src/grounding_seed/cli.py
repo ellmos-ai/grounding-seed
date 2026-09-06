@@ -1,4 +1,4 @@
-"""CLI: `grounding-seed status|resolve|confirm|scan`."""
+"""CLI: `grounding-seed status|resolve|confirm|scan|fertilizer`."""
 
 from __future__ import annotations
 
@@ -6,6 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
+from grounding_seed.fertilizer import confirm_candidate, dismiss_candidate, list_candidates, record_candidate
 from grounding_seed.ladder import confirm, resolve
 from grounding_seed.location import detect_ecosystem
 from grounding_seed.scan import scan
@@ -34,6 +35,27 @@ def main(argv: list[str] | None = None) -> int:
 
     s = commands.add_parser("scan", help="Wissen+Ressourcen scannen")
     s.add_argument("--program", action="append", default=[], help="Wiederholbar, z.B. --program ffmpeg")
+
+    f = commands.add_parser("fertilizer", help="Nutzungsspur-Kandidaten (organic-growth)")
+    f_actions = f.add_subparsers(dest="fertilizer_action", required=True)
+
+    f_record = f_actions.add_parser("record", help="Kookkurrenz aus dem aktiven Kontextfenster festhalten")
+    f_record.add_argument("components", nargs="+", help="Mindestens zwei benannte Komponenten")
+    f_record.add_argument("--evidence", required=True, help="Woertliche/sinngemaesse Belegstelle aus dem Prompt")
+    f_record.add_argument("--link-type", default="synapse", choices=["synapse", "endplate"])
+    f_record.add_argument("--state", default="verbinden", choices=["verbinden", "koexistieren", "abwehren"])
+
+    f_list = f_actions.add_parser("list", help="Kandidaten auflisten")
+    f_list.add_argument("--exclude-confirmed", action="store_true")
+    f_list.add_argument("--include-dismissed", action="store_true")
+
+    f_confirm = f_actions.add_parser("confirm", help="Kandidat bestaetigen (bleibt Stufe 2)")
+    f_confirm.add_argument("components", nargs="+")
+    f_confirm.add_argument("--von", default="user", dest="bestaetigt_von")
+
+    f_dismiss = f_actions.add_parser("dismiss", help="Kandidat als 'koexistieren' verwerfen")
+    f_dismiss.add_argument("components", nargs="+")
+    f_dismiss.add_argument("--reason", default=None)
 
     args = parser.parse_args(argv)
     root = Path(args.root)
@@ -68,6 +90,28 @@ def main(argv: list[str] | None = None) -> int:
             "resources_missing": result.resources_missing,
         })
         return 0
+
+    if args.command == "fertilizer":
+        if args.fertilizer_action == "record":
+            candidate = record_candidate(
+                root, args.components, args.evidence, link_type=args.link_type, state=args.state,
+            )
+            _print(candidate.to_dict())
+            return 0
+        if args.fertilizer_action == "list":
+            candidates = list_candidates(
+                root, include_confirmed=not args.exclude_confirmed, include_dismissed=args.include_dismissed,
+            )
+            _print([c.to_dict() for c in candidates])
+            return 0
+        if args.fertilizer_action == "confirm":
+            candidate = confirm_candidate(root, args.components, bestaetigt_von=args.bestaetigt_von)
+            _print(candidate.to_dict())
+            return 0
+        if args.fertilizer_action == "dismiss":
+            candidate = dismiss_candidate(root, args.components, reason=args.reason)
+            _print(candidate.to_dict())
+            return 0
 
     parser.print_help()
     return 1

@@ -5,7 +5,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Ecosystem: ellmos--ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
-[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2054%2F54%20Passing-brightgreen.svg)](tests/)
+[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2064%2F64%20Passing-brightgreen.svg)](tests/)
 
 > [!NOTE]
 > **AI & LLM Integration Notice**: This repository includes an [`llms.txt`](llms.txt) index file tailored for automated context ingestion, agentic system prompts, and LLM code understanding.
@@ -127,6 +127,21 @@ Two kinds, as the ticket demands: knowledge/preferences (config/rule files:
 (installed programs via `shutil.which`). **Deliberately limited:** no
 database/service reachability check -- see "What's deliberately missing".
 
+**Optional third source -- the usage trace (`fertilizer.py`, T-20260815-316117714):**
+connections don't only arise from searching (above) -- the user often ties them
+together simply by USING them together ("use USMC and do X and the policies for
+it"). If the standalone skill [`organic-growth`](https://github.com/ellmos-ai/skills/tree/main/skills/infrastructure/organic-growth)
+is present, it feeds this trace into `fertilizer.record_candidate()` as a Stage-2
+(`Stufe.DISCOVERY_VORSCHLAG`, PROPOSED) candidate -- a suggestion, never an
+automatic binding (conservative default, decided 2026-09-06). **One-way
+dependency by design:** `grounding-seed` knows about and recommends
+`organic-growth`; `organic-growth` knows nothing about `grounding-seed` and
+stays usable entirely on its own. If the skill isn't present, this third source
+simply doesn't fire -- no error, no warning, nothing missing to fix. Referenced
+by name and version, never embedded as a copy (see "Why copying is right here" --
+that rule is for isolated repos; two ellmos-ai skills referencing each other are
+not isolated from one another).
+
 ### 6. Light -- the trigger of a run
 
 Sharpened rather than left vague (the metaphor's original weakest point): Light
@@ -141,7 +156,7 @@ wait state.
 *"Memory, memory change arise from searching."* Important: it's a RESULT, not a
 precondition -- the root forms while growing. Technically: `store.py` (a find
 becomes stage 0) and the version stamp `template_stamp()`
-(`grounding-seed@0.2.0`) carried by every copy, so it can later be determined
+(`grounding-seed@0.3.0`) carried by every copy, so it can later be determined
 which repos carry an old version.
 
 ### 8. Transplanting, part 1: cheap detection -- `transplant.py`
@@ -222,7 +237,7 @@ grounding-seed --root ./.grounding-seed scan --program ffmpeg
 python -m pytest tests/ -q
 ```
 
-54/54 green (as of 2026-08-22), including `test_ladder_parity.py` -- the proof
+64/64 green (as of 2026-09-06, with source_resolver installed; 56/59 without it, plus the 5 test_ladder_parity.py tests that require the package), including `test_ladder_parity.py` -- the proof
 that the isolated minimal version produces the same result shape as
 `source_resolver.ladder` (stage values, status vocabulary, `dialog` structure,
 `confirm()` signature).
