@@ -5,7 +5,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Ecosystem: ellmos--ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
-[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2064%2F64%20Passing-brightgreen.svg)](tests/)
+[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2066%2F66%20Passing-brightgreen.svg)](tests/)
 
 > [!NOTE]
 > **AI & LLM Integration Notice**: This repository includes an [`llms.txt`](llms.txt) index file tailored for automated context ingestion, agentic system prompts, and LLM code understanding.
@@ -130,7 +130,7 @@ database/service reachability check -- see "What's deliberately missing".
 **Optional third source -- the usage trace (`fertilizer.py`, T-20260815-316117714):**
 connections don't only arise from searching (above) -- the user often ties them
 together simply by USING them together ("use USMC and do X and the policies for
-it"). If the standalone skill [`organic-growth`](https://github.com/ellmos-ai/skills/tree/main/skills/infrastructure/organic-growth)
+it"). If the standalone skill [`organic-growth@0.1.0`](https://github.com/ellmos-ai/skills/tree/main/skills/infrastructure/organic-growth)
 is present, it feeds this trace into `fertilizer.record_candidate()` as a Stage-2
 (`Stufe.DISCOVERY_VORSCHLAG`, PROPOSED) candidate -- a suggestion, never an
 automatic binding (conservative default, decided 2026-09-06). **One-way
@@ -237,7 +237,7 @@ grounding-seed --root ./.grounding-seed scan --program ffmpeg
 python -m pytest tests/ -q
 ```
 
-64/64 green (as of 2026-09-06, with source_resolver installed; 56/59 without it, plus the 5 test_ladder_parity.py tests that require the package), including `test_ladder_parity.py` -- the proof
+66/66 green (as of 2026-09-06, with source_resolver installed; 58/61 without it, plus the 5 test_ladder_parity.py tests that require the package), including `test_ladder_parity.py` -- the proof
 that the isolated minimal version produces the same result shape as
 `source_resolver.ladder` (stage values, status vocabulary, `dialog` structure,
 `confirm()` signature).

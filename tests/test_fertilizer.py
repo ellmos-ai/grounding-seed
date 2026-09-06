@@ -67,6 +67,48 @@ def test_confirm_unknown_candidate_raises(tmp_path):
         confirm_candidate(tmp_path, ["a", "b"])
 
 
+def test_confirm_targets_the_open_candidate_not_an_older_confirmed_one(tmp_path):
+    """Regression: nach einer Bestaetigung kann record_candidate() fuer dieselbe
+    Paarung einen zweiten, neuen offenen Kandidaten anlegen. confirm_candidate()
+    muss DIESEN treffen -- nicht den ersten Treffer nach Key, der der bereits
+    bestaetigte Alteintrag waere."""
+    record_candidate(tmp_path, ["usmc", "policies"], "erster Beleg")
+    confirm_candidate(tmp_path, ["usmc", "policies"])
+    record_candidate(tmp_path, ["usmc", "policies"], "zweiter Beleg")
+
+    newly_confirmed = confirm_candidate(tmp_path, ["usmc", "policies"], bestaetigt_von="lukas")
+    assert newly_confirmed.evidence == "zweiter Beleg"
+
+    candidates = list_candidates(tmp_path)
+    assert len(candidates) == 2
+    assert all(c.confirmed for c in candidates)
+
+    # Ein dritter Aufruf findet keinen offenen Kandidaten mehr -- kein stilles
+    # Re-Bestaetigen eines Alteintrags.
+    with pytest.raises(ValueError):
+        confirm_candidate(tmp_path, ["usmc", "policies"])
+
+
+def test_dismiss_never_touches_an_already_confirmed_candidate(tmp_path):
+    """Regression: dismiss_candidate() darf niemals einen bereits bestaetigten
+    Eintrag treffen -- sonst entstuende confirmed=True UND dismissed=True
+    gleichzeitig, ein widerspruechlicher Zustand."""
+    record_candidate(tmp_path, ["blender", "ffmpeg"], "erster Beleg")
+    confirmed = confirm_candidate(tmp_path, ["blender", "ffmpeg"])
+    record_candidate(tmp_path, ["blender", "ffmpeg"], "zweiter Beleg")
+
+    dismissed = dismiss_candidate(tmp_path, ["blender", "ffmpeg"], reason="Zweitbeobachtung war Zufall")
+    assert dismissed.evidence == "zweiter Beleg"
+    assert dismissed.dismissed is True
+    assert dismissed.confirmed is False  # nicht der bestaetigte Alteintrag
+
+    # Der zuerst bestaetigte Eintrag bleibt unangetastet: nicht dismissed.
+    candidates = list_candidates(tmp_path, include_dismissed=True)
+    still_confirmed = [c for c in candidates if c.evidence == "erster Beleg"][0]
+    assert still_confirmed.confirmed is True
+    assert still_confirmed.dismissed is False
+
+
 def test_dismiss_marks_koexistieren_and_persists(tmp_path):
     record_candidate(tmp_path, ["blender", "ffmpeg"], "einmalig erwaehnt")
     dismissed = dismiss_candidate(tmp_path, ["blender", "ffmpeg"], reason="nur einmalig, kein Muster")

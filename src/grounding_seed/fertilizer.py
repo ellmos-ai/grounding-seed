@@ -197,7 +197,12 @@ def confirm_candidate(
     candidates = _read_all(root, filename)
     key = _normalized_key(components)
     for existing in candidates:
-        if _normalized_key(existing.components) == key and not existing.dismissed:
+        # Nur den OFFENEN Kandidaten treffen -- nicht den ersten mit gleichem Key.
+        # Nach einer Bestaetigung kann record_candidate() fuer dieselbe Paarung
+        # einen zweiten, neuen offenen Kandidaten anlegen (siehe dortige
+        # Dokumentation); ohne diesen Filter wuerde eine erneute confirm_candidate()
+        # -Anfrage den bereits bestaetigten Alteintrag treffen statt des neuen.
+        if _normalized_key(existing.components) == key and not existing.confirmed and not existing.dismissed:
             existing.confirmed = True
             existing.confirmed_at = now_iso()
             existing.confirmed_von = bestaetigt_von
@@ -219,10 +224,13 @@ def dismiss_candidate(
     candidates = _read_all(root, filename)
     key = _normalized_key(components)
     for existing in candidates:
-        if _normalized_key(existing.components) == key:
+        # Nur den OFFENEN Kandidaten treffen (siehe Begruendung in confirm_candidate()).
+        # Ein bereits bestaetigter Eintrag darf hier NICHT getroffen werden -- sonst
+        # entstuende der widerspruechliche Zustand confirmed=True UND dismissed=True.
+        if _normalized_key(existing.components) == key and not existing.confirmed and not existing.dismissed:
             existing.dismissed = True
             existing.dismissed_reason = reason
             existing.state = "koexistieren"
             _write_all(root, filename, candidates)
             return existing
-    raise ValueError(f"Kein Kandidat fuer Komponenten {components!r} gefunden.")
+    raise ValueError(f"Kein offener Kandidat fuer Komponenten {components!r} gefunden.")

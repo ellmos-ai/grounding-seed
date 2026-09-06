@@ -51,8 +51,9 @@
       "type": "seam",
       "id": "organic-growth-fertilizer",
       "target": "organic-growth",
+      "target_version": "0.1.0",
       "status": "optional",
-      "note": "Empfehlung, kein Requirement, Richtung nur grounding-seed -> organic-growth (T-20260815-316117714). Der Skill (skills/infrastructure/organic-growth, referenziert per Name+Version, nicht eingebettet) achtet im aktiven Kontextfenster auf vom Nutzer selbst hergestellte Verbindungen und uebergibt sie an grounding_seed.fertilizer.record_candidate() als Stufe-2/PROPOSED-Kandidat. Fehlt der Skill, entfaellt diese dritte Naehrstoffquelle ohne Fehler."
+      "note": "Empfehlung, kein Requirement, Richtung nur grounding-seed -> organic-growth (T-20260815-316117714). Der Skill organic-growth@0.1.0 (skills/infrastructure/organic-growth, referenziert per Name+Version, nicht eingebettet) achtet im aktiven Kontextfenster auf vom Nutzer selbst hergestellte Verbindungen und uebergibt sie an grounding_seed.fertilizer.record_candidate() als Stufe-2/PROPOSED-Kandidat. Fehlt der Skill, entfaellt diese dritte Naehrstoffquelle ohne Fehler."
     }
   ]
 }

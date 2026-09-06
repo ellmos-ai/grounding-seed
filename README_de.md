@@ -5,7 +5,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Ecosystem: ellmos--ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
-[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2064%2F64%20Passing-brightgreen.svg)](tests/)
+[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2066%2F66%20Passing-brightgreen.svg)](tests/)
 
 > [!NOTE]
 > **LLM/KI-Kontext-Index:** Eine maschinenlesbare Spezifikation für KI-Agenten befindet sich in [`llms.txt`](llms.txt).
@@ -134,7 +134,7 @@ Datenbank-/Dienst-Erreichbarkeitscheck -- siehe "Was hier bewusst fehlt".
 Verbindungen entstehen nicht nur durch Suchen (oben) -- der Nutzer verbindet oft
 schon durch die blosse NUTZUNG ("nutze USMC und mach das und das und die
 Policies dafuer"). Ist der eigenstaendige Skill
-[`organic-growth`](https://github.com/ellmos-ai/skills/tree/main/skills/infrastructure/organic-growth)
+[`organic-growth@0.1.0`](https://github.com/ellmos-ai/skills/tree/main/skills/infrastructure/organic-growth)
 vorhanden, speist er diese Spur ueber `fertilizer.record_candidate()` als
 Stufe-2-Kandidat (`Stufe.DISCOVERY_VORSCHLAG`, PROPOSED) ein -- ein Vorschlag,
 nie eine automatische Bindung (konservativer Default, Nutzerentscheid
@@ -242,6 +242,6 @@ grounding-seed --root ./.grounding-seed scan --program ffmpeg
 python -m pytest tests/ -q
 ```
 
-64/64 grün (Stand 2026-09-06, mit installiertem source_resolver; ohne das Paket 56/59 plus die 5 test_ladder_parity.py-Tests, die es voraussetzen), inklusive `test_ladder_parity.py` -- dem Beweis,
+66/66 grün (Stand 2026-09-06, mit installiertem source_resolver; ohne das Paket 58/61 plus die 5 test_ladder_parity.py-Tests, die es voraussetzen), inklusive `test_ladder_parity.py` -- dem Beweis,
 dass die isolierte Minimalfassung dieselbe Ergebnisform wie `source_resolver.ladder`
 produziert (Stufe-Werte, Status-Vokabular, `dialog`-Struktur, `confirm()`-Signatur).
