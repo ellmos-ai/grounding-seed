@@ -5,7 +5,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Ecosystem: ellmos--ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
-[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2066%2F66%20Passing-brightgreen.svg)](tests/)
+[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2068%2F68%20Passing-brightgreen.svg)](tests/)
 
 > [!NOTE]
 > **LLM/KI-Kontext-Index:** Eine maschinenlesbare Spezifikation für KI-Agenten befindet sich in [`llms.txt`](llms.txt).
@@ -133,16 +133,24 @@ Datenbank-/Dienst-Erreichbarkeitscheck -- siehe "Was hier bewusst fehlt".
 **Optionale dritte Quelle -- die Nutzungsspur (`fertilizer.py`, T-20260815-316117714):**
 Verbindungen entstehen nicht nur durch Suchen (oben) -- der Nutzer verbindet oft
 schon durch die blosse NUTZUNG ("nutze USMC und mach das und das und die
-Policies dafuer"). Ist der eigenstaendige Skill
+Policies dafuer"). Der eigenstaendige Skill
 [`organic-growth@0.1.0`](https://github.com/ellmos-ai/skills/tree/main/skills/infrastructure/organic-growth)
-vorhanden, speist er diese Spur ueber `fertilizer.record_candidate()` als
-Stufe-2-Kandidat (`Stufe.DISCOVERY_VORSCHLAG`, PROPOSED) ein -- ein Vorschlag,
-nie eine automatische Bindung (konservativer Default, Nutzerentscheid
-2026-09-06). **Abhaengigkeit bewusst nur in EINE Richtung:** `grounding-seed`
-kennt und empfiehlt `organic-growth`; `organic-growth` weiss nichts von
-`grounding-seed` und bleibt vollstaendig eigenstaendig nutzbar. Fehlt der
-Skill, faellt diese dritte Quelle einfach weg -- ohne Fehler, ohne Warnung,
-nichts, was fehlt und repariert werden muesste. Nur als Verweis mit
+achtet im aktiven Kontextfenster genau darauf -- ruft aber selbst nie
+`grounding-seed` oder ein anderes Modul namentlich auf (siehe "Abhaengigkeit
+nur in eine Richtung" unten). **Die Bruecke schlaegt der Agent, der beide zur
+Verfuegung hat:** Wer nach den Anweisungen von `organic-growth` arbeitet,
+bemerkt die Kookkurrenz -- und findet er `grounding-seed`s eigenen
+Merkmechanismus vor, traegt er die Spur selbst ueber
+`fertilizer.record_candidate()` ein, als Stufe-2-Kandidat
+(`Stufe.DISCOVERY_VORSCHLAG`, PROPOSED) -- ein Vorschlag, nie eine automatische
+Bindung (konservativer Default, Nutzerentscheid 2026-09-06). **Abhaengigkeit
+bewusst nur in EINE Richtung:** `grounding-seed` kennt und empfiehlt
+`organic-growth`; `organic-growth` weiss nichts von `grounding-seed` -- er
+spricht nur generisch ("wenn ein genanntes Werkzeug einen eigenen
+Merkmechanismus hat, nutze ihn") -- und bleibt vollstaendig eigenstaendig
+nutzbar. Fehlt der Skill, oder schlaegt kein Agent die Bruecke, faellt diese
+dritte Quelle einfach weg -- ohne Fehler, ohne Warnung, nichts, was fehlt und
+repariert werden muesste. Nur als Verweis mit
 Versionsangabe eingebunden, nie als eingebettete Kopie (der Grundsatz "Warum
 Kopieren hier richtig ist" gilt fuer isolierte Repos -- zwei sich
 referenzierende ellmos-ai-Skills sind voneinander nicht isoliert).
@@ -161,7 +169,7 @@ aussen, nicht von einem eigenen Wartezustand.
 *"Bei Suche entsteht: Gedaechtnis, Gedaechtnisaenderung."* Wichtig: es ist
 ERGEBNIS, nicht Vorbedingung -- die Wurzel bildet sich beim Wachsen. Technisch:
 `store.py` (Fund -> Stufe 0) und der Versionsstempel `template_stamp()`
-(`grounding-seed@0.3.0`) in jeder Kopie, damit sich spaeter feststellen laesst,
+(`grounding-seed@0.3.1`) in jeder Kopie, damit sich spaeter feststellen laesst,
 welche Repos einen alten Stand tragen.
 
 ### 8. Verpflanzung, Teil 1: billige Erkennung -- `transplant.py`
@@ -242,6 +250,6 @@ grounding-seed --root ./.grounding-seed scan --program ffmpeg
 python -m pytest tests/ -q
 ```
 
-66/66 grün (Stand 2026-09-06, mit installiertem source_resolver; ohne das Paket 58/61 plus die 5 test_ladder_parity.py-Tests, die es voraussetzen), inklusive `test_ladder_parity.py` -- dem Beweis,
+68/68 grün (Stand 2026-09-06, mit installiertem source_resolver; ohne das Paket 60/63 plus die 5 test_ladder_parity.py-Tests, die es voraussetzen), inklusive `test_ladder_parity.py` -- dem Beweis,
 dass die isolierte Minimalfassung dieselbe Ergebnisform wie `source_resolver.ladder`
 produziert (Stufe-Werte, Status-Vokabular, `dialog`-Struktur, `confirm()`-Signatur).
