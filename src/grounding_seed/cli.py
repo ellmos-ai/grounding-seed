@@ -43,7 +43,12 @@ def main(argv: list[str] | None = None) -> int:
     f_record.add_argument("components", nargs="+", help="Mindestens zwei benannte Komponenten")
     f_record.add_argument("--evidence", required=True, help="Woertliche/sinngemaesse Belegstelle aus dem Prompt")
     f_record.add_argument("--link-type", default="synapse", choices=["synapse", "endplate"])
-    f_record.add_argument("--state", default="verbinden", choices=["verbinden", "koexistieren", "abwehren"])
+    f_record.add_argument(
+        "--state", default=None, choices=["verbinden", "koexistieren", "abwehren"],
+        help="Nur bei explizitem Setzen wirksam (auch fuer den Eskalationsweg auf "
+             "'abwehren') -- ohne dieses Flag bleibt der state eines bestehenden "
+             "offenen Kandidaten unveraendert; ein neuer Kandidat startet als 'verbinden'.",
+    )
 
     f_list = f_actions.add_parser("list", help="Kandidaten auflisten")
     f_list.add_argument("--exclude-confirmed", action="store_true")

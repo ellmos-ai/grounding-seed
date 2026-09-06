@@ -150,7 +150,7 @@ def _write_all(root: Path, filename: str, candidates: list[ConnectionCandidate])
 
 def record_candidate(
     root: Path, components: list[str], evidence: str,
-    *, link_type: str = "synapse", state: str = "verbinden", filename: str = DEFAULT_FILENAME,
+    *, link_type: str = "synapse", state: str | None = None, filename: str = DEFAULT_FILENAME,
 ) -> ConnectionCandidate:
     """Haelt eine im aktiven Kontextfenster beobachtete Nutzungsspur fest.
 
@@ -162,12 +162,28 @@ def record_candidate(
     Sperre (im Kontextfenster gibt es keine Session-uebergreifende Statistik,
     siehe Modul-Docstring), aber Wiederholungen sollen trotzdem nicht als
     separate Eintraege wuchern.
+
+    `state`: **Default-Argument vs. explizit unterscheiden** (Fix
+    T-20260906-140331395, vorbestehender Bug seit 0.3.0). `None` (Default)
+    heisst "kein Eskalationswunsch" -- ein Update laesst den bestehenden
+    `state` UNVERAENDERT; bei einem neuen Kandidaten wird dann "verbinden"
+    angenommen. Ein EXPLIZIT uebergebener Wert (z. B. `state="abwehren"`)
+    wird bei einem Update TATSAECHLICH uebernommen -- das ist der in beiden
+    anderen Docstrings versprochene Eskalationsweg ("wer eine Bedrohung
+    erkennt, setzt state beim naechsten record_candidate()-Aufruf explizit
+    auf 'abwehren'"), der vor diesem Fix wirkungslos war. `abwehren` bleibt
+    dabei terminal in die andere Richtung: ist der bestehende Kandidat
+    BEREITS `abwehren`, blockiert `_ensure_not_quarantined()` jede weitere
+    explizite `state`-Aenderung ueber diese Funktion (auch ein erneutes
+    "abwehren") -- dieselbe Quarantaene-Logik wie bei confirm_candidate()/
+    dismiss_candidate(), hier konsequent auch auf den Eskalationsweg selbst
+    angewendet.
     """
     if len(components) < 2:
         raise ValueError("Eine Verbindung braucht mindestens zwei benannte Komponenten.")
     if link_type not in VALID_LINK_TYPES:
         raise ValueError(f"link_type muss einer von {VALID_LINK_TYPES} sein, nicht {link_type!r}.")
-    if state not in VALID_STATES:
+    if state is not None and state not in VALID_STATES:
         raise ValueError(f"state muss einer von {VALID_STATES} sein, nicht {state!r}.")
 
     candidates = _read_all(root, filename)
@@ -176,6 +192,9 @@ def record_candidate(
 
     for existing in candidates:
         if _normalized_key(existing.components) == key and not existing.confirmed and not existing.dismissed:
+            if state is not None:
+                _ensure_not_quarantined(existing, components)
+                existing.state = state
             existing.times_observed += 1
             existing.last_seen = now
             existing.evidence = evidence
@@ -183,7 +202,8 @@ def record_candidate(
             return existing
 
     new_candidate = ConnectionCandidate(
-        components=list(components), evidence=evidence, link_type=link_type, state=state,
+        components=list(components), evidence=evidence, link_type=link_type,
+        state=state if state is not None else "verbinden",
         first_seen=now, last_seen=now,
     )
     candidates.append(new_candidate)

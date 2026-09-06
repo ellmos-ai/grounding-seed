@@ -40,6 +40,54 @@ def test_record_is_order_independent_and_case_insensitive(tmp_path):
     assert second.evidence == "zweiter Beleg"
 
 
+def test_record_without_state_leaves_existing_state_unchanged(tmp_path):
+    """Regression T-20260906-140331395: state=None (Default) heisst 'kein
+    Eskalationswunsch' -- ein Update darf den bestehenden state NICHT anfassen."""
+    first = record_candidate(tmp_path, ["a", "b"], "erster Beleg")
+    assert first.state == "verbinden"
+    second = record_candidate(tmp_path, ["a", "b"], "zweiter Beleg")
+    assert second.state == "verbinden"
+    assert second.times_observed == 2
+
+
+def test_record_with_explicit_state_escalates_an_existing_open_candidate(tmp_path):
+    """Regression T-20260906-140331395 (Opus-Reviewer-Befund beim Merge von PR#2,
+    vorbestehend seit 0.3.0): genau die gemeldete Sequenz -- record_candidate()
+    ohne state, dann record_candidate() mit state='abwehren' auf dieselbe
+    Paarung -- muss den Kandidaten tatsaechlich auf 'abwehren' eskalieren.
+    Vorher liess das den state unveraendert auf 'verbinden'."""
+    record_candidate(tmp_path, ["a", "b"], "unauffaellig zuerst")
+    escalated = record_candidate(tmp_path, ["a", "b"], "jetzt riskant wirkend", state="abwehren")
+    assert escalated.state == "abwehren"
+    assert escalated.times_observed == 2
+    assert escalated.evidence == "jetzt riskant wirkend"
+    candidates = list_candidates(tmp_path)
+    assert len(candidates) == 1  # weiterhin derselbe Kandidat, nicht dupliziert
+
+
+def test_record_cannot_re_state_an_already_quarantined_candidate(tmp_path):
+    """'abwehren' bleibt terminal auch gegenueber record_candidate() selbst --
+    nicht nur gegenueber confirm_candidate()/dismiss_candidate(). Ein erneuter
+    EXPLIZITER state-Versuch auf einen bereits quarantaenierten Kandidaten wird
+    abgelehnt, unabhaengig vom Zielwert."""
+    record_candidate(tmp_path, ["a", "b"], "sofort riskant", state="abwehren")
+    with pytest.raises(ValueError):
+        record_candidate(tmp_path, ["a", "b"], "spaeter harmlos?", state="verbinden")
+    with pytest.raises(ValueError):
+        record_candidate(tmp_path, ["a", "b"], "erneut abwehren", state="abwehren")
+
+
+def test_record_without_state_still_updates_metadata_on_a_quarantined_candidate(tmp_path):
+    """Passives Weiterbeobachten (kein expliziter state) ist auf einem
+    quarantaenierten Kandidaten weiterhin erlaubt -- nur eine explizite
+    state-Aenderung ist gesperrt, nicht die Funktion insgesamt."""
+    record_candidate(tmp_path, ["a", "b"], "sofort riskant", state="abwehren")
+    observed_again = record_candidate(tmp_path, ["a", "b"], "immer noch da")
+    assert observed_again.state == "abwehren"
+    assert observed_again.times_observed == 2
+    assert observed_again.evidence == "immer noch da"
+
+
 def test_record_does_not_update_confirmed_candidate(tmp_path):
     record_candidate(tmp_path, ["usmc", "policies"], "erster Beleg")
     confirm_candidate(tmp_path, ["usmc", "policies"])
