@@ -6,6 +6,36 @@
   nun den zulässigen Wert `project`, passend zum dokumentierten, vom Aufrufer
   übergebenen projekt-/modullokalen Zustandsroot. 54/54 Tests grün.
 
+## [0.3.2] - 2026-09-06
+
+PR#2-Merge-Nachzug (T-20260906-140331395, Befund merge-reviewer-gs2/Opus beim
+Merge von PR#2): vorbestehender Bug seit 0.3.0, durch die neue Terminalitaet
+von 'abwehren' (0.3.1) wichtiger geworden.
+
+- **Fix: `record_candidate()` uebernahm einen explizit uebergebenen `state`
+  beim Aktualisieren eines bestehenden offenen Kandidaten NIE** -- der in
+  beiden anderen Docstrings versprochene Eskalationsweg nach 'abwehren'
+  ("wer eine Bedrohung erkennt, setzt state beim naechsten
+  record_candidate()-Aufruf explizit auf 'abwehren'") war dadurch wirkungslos.
+  `state` ist jetzt `str | None = None`: `None` (Default) laesst den
+  bestehenden state unveraendert, ein expliziter Wert wird uebernommen. Ein
+  neuer Kandidat startet weiterhin als 'verbinden', wenn kein `state`
+  angegeben wird.
+- **'abwehren' bleibt konsequent terminal, auch gegenueber record_candidate()
+  selbst:** ein bereits quarantaenierter Kandidat lehnt jede weitere
+  EXPLIZITE `state`-Aenderung ueber `_ensure_not_quarantined()` ab (auch ein
+  erneutes "abwehren"); passives Weiterbeobachten ohne `state`-Angabe bleibt
+  moeglich und aktualisiert nur `times_observed`/`evidence`/`last_seen`.
+- CLI: `grounding-seed fertilizer record` uebergibt `--state` jetzt nur noch
+  bei tatsaechlicher Angabe (vorher immer explizit `"verbinden"` als
+  argparse-Default, was denselben Bug auch von der CLI aus reproduziert
+  haette).
+- 4 neue Regressionstests, darunter die exakte gemeldete Sequenz
+  (`record_candidate(...)` dann `record_candidate(..., state="abwehren")`).
+  72/72 Tests gruen mit installiertem `source_resolver` (war 68/68); auf
+  einem Host ohne das Paket 64/67 ohne `test_ladder_parity.py` (dieselben 3
+  vorbestehenden, unabhaengigen Fehlschlaege wie zuvor).
+
 ## [0.3.1] - 2026-09-06
 
 PR#1-Review-Nachzug (T-20260906-217302993, merge-reviewer-gs/Opus):

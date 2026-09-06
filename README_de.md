@@ -5,7 +5,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Ecosystem: ellmos--ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
-[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2068%2F68%20Passing-brightgreen.svg)](tests/)
+[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2072%2F72%20Passing-brightgreen.svg)](tests/)
 
 > [!NOTE]
 > **LLM/KI-Kontext-Index:** Eine maschinenlesbare Spezifikation für KI-Agenten befindet sich in [`llms.txt`](llms.txt).
@@ -169,7 +169,7 @@ aussen, nicht von einem eigenen Wartezustand.
 *"Bei Suche entsteht: Gedaechtnis, Gedaechtnisaenderung."* Wichtig: es ist
 ERGEBNIS, nicht Vorbedingung -- die Wurzel bildet sich beim Wachsen. Technisch:
 `store.py` (Fund -> Stufe 0) und der Versionsstempel `template_stamp()`
-(`grounding-seed@0.3.1`) in jeder Kopie, damit sich spaeter feststellen laesst,
+(`grounding-seed@0.3.2`) in jeder Kopie, damit sich spaeter feststellen laesst,
 welche Repos einen alten Stand tragen.
 
 ### 8. Verpflanzung, Teil 1: billige Erkennung -- `transplant.py`
@@ -250,6 +250,6 @@ grounding-seed --root ./.grounding-seed scan --program ffmpeg
 python -m pytest tests/ -q
 ```
 
-68/68 grün (Stand 2026-09-06, mit installiertem source_resolver; ohne das Paket 60/63 plus die 5 test_ladder_parity.py-Tests, die es voraussetzen), inklusive `test_ladder_parity.py` -- dem Beweis,
+72/72 grün (Stand 2026-09-06, mit installiertem source_resolver; ohne das Paket 64/67 plus die 5 test_ladder_parity.py-Tests, die es voraussetzen), inklusive `test_ladder_parity.py` -- dem Beweis,
 dass die isolierte Minimalfassung dieselbe Ergebnisform wie `source_resolver.ladder`
 produziert (Stufe-Werte, Status-Vokabular, `dialog`-Struktur, `confirm()`-Signatur).
