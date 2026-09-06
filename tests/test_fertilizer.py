@@ -121,6 +121,34 @@ def test_dismiss_marks_koexistieren_and_persists(tmp_path):
     assert list_candidates(tmp_path, include_dismissed=True) == [dismissed]
 
 
+def test_dismiss_never_downgrades_an_abwehren_candidate(tmp_path):
+    """Regression (Review-Anmerkung PR#1): dismiss_candidate() darf eine
+    bestehende 'abwehren'-Einstufung (Quarantaene, T-20260815-109780293) nicht
+    stillschweigend zu 'koexistieren' abschwaechen -- 'abwehren' ist terminal."""
+    record_candidate(tmp_path, ["fremdes-tool", "unbekannte-quelle"], "riskant wirkende Kombination",
+                      state="abwehren")
+    with pytest.raises(ValueError):
+        dismiss_candidate(tmp_path, ["fremdes-tool", "unbekannte-quelle"], reason="doch harmlos?")
+
+    candidates = list_candidates(tmp_path)
+    assert len(candidates) == 1
+    assert candidates[0].state == "abwehren"
+    assert candidates[0].dismissed is False
+
+
+def test_confirm_never_confirms_an_abwehren_candidate(tmp_path):
+    """Symmetrisch: confirm_candidate() darf eine Quarantaene-Einstufung nicht
+    'bestaetigen' -- das waere ein Widerspruch in sich (confirmed + abwehren)."""
+    record_candidate(tmp_path, ["fremdes-tool", "unbekannte-quelle"], "riskant wirkende Kombination",
+                      state="abwehren")
+    with pytest.raises(ValueError):
+        confirm_candidate(tmp_path, ["fremdes-tool", "unbekannte-quelle"])
+
+    candidates = list_candidates(tmp_path)
+    assert candidates[0].confirmed is False
+    assert candidates[0].state == "abwehren"
+
+
 def test_list_candidates_can_exclude_confirmed(tmp_path):
     record_candidate(tmp_path, ["a", "b"], "x")
     confirm_candidate(tmp_path, ["a", "b"])

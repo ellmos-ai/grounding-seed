@@ -6,6 +6,31 @@
   nun den zulässigen Wert `project`, passend zum dokumentierten, vom Aufrufer
   übergebenen projekt-/modullokalen Zustandsroot. 54/54 Tests grün.
 
+## [0.3.1] - 2026-09-06
+
+PR#1-Review-Nachzug (T-20260906-217302993, merge-reviewer-gs/Opus):
+
+- **README-Praezisierung:** Die Prosa zu "Naehrstoffe + Andockstellen" widersprach
+  sich scheinbar (`organic-growth` "weiss nichts von grounding-seed" vs. "speist
+  ... ein"). Aufgeloest: der Skill kennt kein Modul und ruft nie
+  `grounding_seed.fertilizer` auf -- die Bruecke schlaegt der AGENT, der beide
+  zur Verfuegung hat, indem er selbst `record_candidate()` aufruft, wenn er die
+  vom Skill erkannte Kookkurrenz UND grounding-seeds Merkmechanismus vorfindet.
+  Betroffen: README.md, README_de.md, llms.txt, `ellmos-module.v2.json`-Adapternote.
+- **Fix: `abwehren` (Quarantaene) ist jetzt terminal.** `dismiss_candidate()`
+  konnte eine bestehende `state="abwehren"`-Einstufung stillschweigend zu
+  `"koexistieren"` abschwaechen; `confirm_candidate()` haette sie ebenso
+  stillschweigend "bestaetigt" (Widerspruch in sich). Beide Funktionen lehnen
+  jetzt ueber `_ensure_not_quarantined()` jede Aenderung an einem als
+  `abwehren` eingestuften Kandidaten ab (`ValueError`) -- eine
+  Risikoeinschaetzung (T-20260815-109780293: "Zustand 3 ist selten und gehoert
+  gemeldet") wird nicht routinemaessig zurueckgenommen. Eine bewusste Aufhebung
+  der Quarantaene ist ein eigener, expliziter Schritt, nicht Teil dieses
+  schmalen Moduls. 2 neue Regressionstests.
+- 68/68 Tests gruen mit installiertem `source_resolver` (war 66/66); auf einem
+  Host ohne das Paket 60/63 ohne `test_ladder_parity.py` (weiterhin dieselben
+  3 vorbestehenden, unabhaengigen Fehlschlaege).
+
 ## [0.3.0] - 2026-09-06
 
 Ticket T-20260815-316117714 ("organic-growth: Verbindungen aus der Nutzungsspur

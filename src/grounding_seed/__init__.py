@@ -31,7 +31,7 @@ from grounding_seed.self_knowledge import (
 )
 from grounding_seed.store import LocalStore
 
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 TEMPLATE_NAME = "grounding-seed"
 
 # Welche source-resolver CONTRACT_VERSION diese Minimalfassung nachbildet (siehe

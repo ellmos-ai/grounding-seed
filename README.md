@@ -5,7 +5,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Ecosystem: ellmos--ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
-[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2066%2F66%20Passing-brightgreen.svg)](tests/)
+[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2068%2F68%20Passing-brightgreen.svg)](tests/)
 
 > [!NOTE]
 > **AI & LLM Integration Notice**: This repository includes an [`llms.txt`](llms.txt) index file tailored for automated context ingestion, agentic system prompts, and LLM code understanding.
@@ -130,16 +130,23 @@ database/service reachability check -- see "What's deliberately missing".
 **Optional third source -- the usage trace (`fertilizer.py`, T-20260815-316117714):**
 connections don't only arise from searching (above) -- the user often ties them
 together simply by USING them together ("use USMC and do X and the policies for
-it"). If the standalone skill [`organic-growth@0.1.0`](https://github.com/ellmos-ai/skills/tree/main/skills/infrastructure/organic-growth)
-is present, it feeds this trace into `fertilizer.record_candidate()` as a Stage-2
+it"). The standalone skill [`organic-growth@0.1.0`](https://github.com/ellmos-ai/skills/tree/main/skills/infrastructure/organic-growth)
+watches for exactly that inside the active context window -- but it never calls
+or imports `grounding-seed`, or any other module by name (see "One-way
+dependency" below). **The bridge is made by whichever agent happens to have
+both available:** running `organic-growth`'s instructions, it notices the
+co-occurrence and, finding `grounding-seed`'s own persistence mechanism, feeds
+the trace into `fertilizer.record_candidate()` itself, as a Stage-2
 (`Stufe.DISCOVERY_VORSCHLAG`, PROPOSED) candidate -- a suggestion, never an
 automatic binding (conservative default, decided 2026-09-06). **One-way
 dependency by design:** `grounding-seed` knows about and recommends
-`organic-growth`; `organic-growth` knows nothing about `grounding-seed` and
-stays usable entirely on its own. If the skill isn't present, this third source
-simply doesn't fire -- no error, no warning, nothing missing to fix. Referenced
-by name and version, never embedded as a copy (see "Why copying is right here" --
-that rule is for isolated repos; two ellmos-ai skills referencing each other are
+`organic-growth`; `organic-growth` knows nothing about `grounding-seed` -- it
+speaks only in generic terms ("if a mentioned tool has its own persistence
+mechanism, use it") -- and stays usable entirely on its own. If the skill isn't
+present, or no agent bridges the two, this third source simply doesn't fire --
+no error, no warning, nothing missing to fix. Referenced by name and version,
+never embedded as a copy (see "Why copying is right here" -- that rule is for
+isolated repos; two ellmos-ai skills referencing each other are
 not isolated from one another).
 
 ### 6. Light -- the trigger of a run
@@ -156,7 +163,7 @@ wait state.
 *"Memory, memory change arise from searching."* Important: it's a RESULT, not a
 precondition -- the root forms while growing. Technically: `store.py` (a find
 becomes stage 0) and the version stamp `template_stamp()`
-(`grounding-seed@0.3.0`) carried by every copy, so it can later be determined
+(`grounding-seed@0.3.1`) carried by every copy, so it can later be determined
 which repos carry an old version.
 
 ### 8. Transplanting, part 1: cheap detection -- `transplant.py`
@@ -237,7 +244,7 @@ grounding-seed --root ./.grounding-seed scan --program ffmpeg
 python -m pytest tests/ -q
 ```
 
-66/66 green (as of 2026-09-06, with source_resolver installed; 58/61 without it, plus the 5 test_ladder_parity.py tests that require the package), including `test_ladder_parity.py` -- the proof
+68/68 green (as of 2026-09-06, with source_resolver installed; 60/63 without it, plus the 5 test_ladder_parity.py tests that require the package), including `test_ladder_parity.py` -- the proof
 that the isolated minimal version produces the same result shape as
 `source_resolver.ladder` (stage values, status vocabulary, `dialog` structure,
 `confirm()` signature).

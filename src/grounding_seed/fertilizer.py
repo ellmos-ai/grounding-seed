@@ -103,6 +103,24 @@ class ConnectionCandidate:
         )
 
 
+def _ensure_not_quarantined(candidate: ConnectionCandidate, components: list[str]) -> None:
+    """'abwehren' (Quarantaene, T-20260815-109780293 Nachtrag 'Drei Zustaende statt
+    zwei') ist eine Risikoeinschaetzung, keine gewoehnliche Vorschlagsbewertung --
+    "Zustand 3 ist selten und gehoert gemeldet", nicht routinemaessig zurueckgenommen.
+    Terminal fuer BEIDE Routinefunktionen dieses Moduls: weder confirm_candidate()
+    (haette eine Quarantaene "bestaetigt", ein Widerspruch in sich) noch
+    dismiss_candidate() (haette sie stillschweigend zu 'koexistieren' abgeschwaecht)
+    duerfen einen so eingestuften Kandidaten anfassen. Eine bewusste Aufhebung der
+    Quarantaene ist ein eigener, expliziter Schritt -- nicht Teil dieses schmalen
+    Moduls."""
+    if candidate.state == "abwehren":
+        raise ValueError(
+            f"Kandidat {components!r} ist als 'abwehren' (Quarantaene) eingestuft -- "
+            "terminal fuer confirm_candidate()/dismiss_candidate(). Eine Risikoeinschaetzung "
+            "wird hier nicht routinemaessig veraendert."
+        )
+
+
 def _path(root: Path, filename: str) -> Path:
     return root / filename
 
@@ -203,6 +221,7 @@ def confirm_candidate(
         # Dokumentation); ohne diesen Filter wuerde eine erneute confirm_candidate()
         # -Anfrage den bereits bestaetigten Alteintrag treffen statt des neuen.
         if _normalized_key(existing.components) == key and not existing.confirmed and not existing.dismissed:
+            _ensure_not_quarantined(existing, components)
             existing.confirmed = True
             existing.confirmed_at = now_iso()
             existing.confirmed_von = bestaetigt_von
@@ -216,10 +235,14 @@ def dismiss_candidate(
 ) -> ConnectionCandidate:
     """Verwirft eine Nutzungsspur bewusst als 'koexistieren' (friedlicher
     Organismus, T-20260815-109780293 Nachtrag) -- PERSISTIERT, damit dieselbe
-    Kookkurrenz nicht bei jedem Lauf erneut vorgeschlagen wird. Kein 'abwehren'
-    (Quarantaene): das ist eine Risikoeinschaetzung, die dieses schmale Modul
-    nicht trifft -- wer eine Bedrohung erkennt, setzt `state` beim naechsten
-    `record_candidate()`-Aufruf explizit auf 'abwehren'.
+    Kookkurrenz nicht bei jedem Lauf erneut vorgeschlagen wird. Setzt NIE
+    selbst 'abwehren' (Quarantaene): das ist eine Risikoeinschaetzung, die
+    dieses schmale Modul nicht trifft -- wer eine Bedrohung erkennt, setzt
+    `state` beim naechsten `record_candidate()`-Aufruf explizit auf 'abwehren'.
+
+    Ist ein Kandidat BEREITS als 'abwehren' eingestuft, ist er fuer diese
+    Funktion terminal (siehe `_ensure_not_quarantined()`) -- ein Dismiss wuerde
+    die Risikoeinschaetzung sonst stillschweigend zu 'koexistieren' abschwaechen.
     """
     candidates = _read_all(root, filename)
     key = _normalized_key(components)
@@ -228,6 +251,7 @@ def dismiss_candidate(
         # Ein bereits bestaetigter Eintrag darf hier NICHT getroffen werden -- sonst
         # entstuende der widerspruechliche Zustand confirmed=True UND dismissed=True.
         if _normalized_key(existing.components) == key and not existing.confirmed and not existing.dismissed:
+            _ensure_not_quarantined(existing, components)
             existing.dismissed = True
             existing.dismissed_reason = reason
             existing.state = "koexistieren"
