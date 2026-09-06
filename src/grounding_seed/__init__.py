@@ -12,6 +12,13 @@ Minimalfassung derselben Stufenordnung -- geprueft auf Ergebnis-Gleichheit in
 tests/test_ladder_parity.py.
 """
 
+from grounding_seed.fertilizer import (
+    ConnectionCandidate,
+    confirm_candidate,
+    dismiss_candidate,
+    list_candidates,
+    record_candidate,
+)
 from grounding_seed.ladder import ResolutionResult, ResolutionStatus, Stufe, resolve
 from grounding_seed.location import detect_ecosystem
 from grounding_seed.self_knowledge import (
@@ -24,7 +31,7 @@ from grounding_seed.self_knowledge import (
 )
 from grounding_seed.store import LocalStore
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 TEMPLATE_NAME = "grounding-seed"
 
 # Welche source-resolver CONTRACT_VERSION diese Minimalfassung nachbildet (siehe
@@ -43,6 +50,7 @@ def template_stamp() -> str:
 __all__ = [
     "SOURCE_RESOLVER_CONTRACT_VERSION",
     "TEMPLATE_NAME",
+    "ConnectionCandidate",
     "GroundingReport",
     "LocalStore",
     "Need",
@@ -53,7 +61,11 @@ __all__ = [
     "Stufe",
     "__version__",
     "assess",
+    "confirm_candidate",
     "detect_ecosystem",
+    "dismiss_candidate",
+    "list_candidates",
+    "record_candidate",
     "resolve",
     "status_from_resolution",
     "template_stamp",

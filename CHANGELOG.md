@@ -6,6 +6,43 @@
   nun den zulässigen Wert `project`, passend zum dokumentierten, vom Aufrufer
   übergebenen projekt-/modullokalen Zustandsroot. 54/54 Tests grün.
 
+## [0.3.0] - 2026-09-06
+
+Ticket T-20260815-316117714 ("organic-growth: Verbindungen aus der Nutzungsspur
+gewinnen"). Nutzerentscheid 2026-09-06: eigenstaendiger Skill UND optionaler
+Fertilizer im Seed, Abhaengigkeit ausdruecklich nur in EINE Richtung
+(grounding-seed -> organic-growth), konservativer Default (Vorschlag statt
+automatischer Bindung).
+
+- Neu: `fertilizer.py` -- optionale dritte Naehrstoffquelle neben Discovery
+  (`scan.py`) und gegenseitigem Erkennen (T-20260815-109780293): die
+  Nutzungsspur. `record_candidate()`/`list_candidates()`/`confirm_candidate()`/
+  `dismiss_candidate()` halten Kookkurrenzen benannter Komponenten aus dem
+  aktiven Kontextfenster als Stufe-2/PROPOSED-Kandidaten fest
+  (`connections-candidates.json`, getrennt von `connections-config.json`, das
+  bereits eine feste, andere Bedeutung traegt -- Migrationsziel+Zeitstempel).
+- Vokabular (`link_type: synapse | endplate`, `state: verbinden | koexistieren
+  | abwehren`) woertlich aus T-20260815-109780293 uebernommen, kein zweites
+  Format erfunden.
+- CLI: `grounding-seed fertilizer record|list|confirm|dismiss`.
+- Manifest: `organic-growth@0.1.0` als optionaler, einseitig gerichteter
+  Seam-Adapter eingetragen (Verweis mit Version, keine eingebettete Kopie).
+- Fix waehrend des Baus (advisor-Review): `confirm_candidate()`/
+  `dismiss_candidate()` trafen bei zwei Eintraegen gleicher Komponenten-Paarung
+  (einer bestaetigt, einer neu offen -- entsteht z. B. nach `confirm()` gefolgt
+  von einem erneuten `record_candidate()`) den FALSCHEN, naemlich den ersten
+  nach Key statt den offenen. `dismiss_candidate()` konnte dadurch sogar einen
+  bereits bestaetigten Eintrag zusaetzlich als `dismissed` markieren
+  (`confirmed=True` UND `dismissed=True` gleichzeitig). Beide Funktionen
+  filtern jetzt zwingend auf `not confirmed and not dismissed`; zwei
+  Regressionstests ergaenzt.
+- 12 neue Tests in `test_fertilizer.py` (66/66 gesamt auf einem Host mit
+  installiertem `source_resolver`, wie zuvor 54/54). Auf WORKSTATION-LG selbst
+  ist `source_resolver` nicht installiert: dort 58/61 gruen ohne
+  `test_ladder_parity.py` (3 vorbestehende, von dieser Aenderung unabhaengige
+  Fehlschlaege + 1 vorbestehender Collection-Fehler wegen des fehlenden
+  Pakets) -- alle 12 neuen Fertilizer-Tests darin gruen.
+
 ## [0.2.0] - 2026-08-15
 
 Befund aus dem ersten echten Anwendungsfall (T-20260815-205101335,
