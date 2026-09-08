@@ -143,6 +143,7 @@ def test_dismiss_never_touches_an_already_confirmed_candidate(tmp_path):
     gleichzeitig, ein widerspruechlicher Zustand."""
     record_candidate(tmp_path, ["blender", "ffmpeg"], "erster Beleg")
     confirmed = confirm_candidate(tmp_path, ["blender", "ffmpeg"])
+    assert confirmed.confirmed is True
     record_candidate(tmp_path, ["blender", "ffmpeg"], "zweiter Beleg")
 
     dismissed = dismiss_candidate(tmp_path, ["blender", "ffmpeg"], reason="Zweitbeobachtung war Zufall")

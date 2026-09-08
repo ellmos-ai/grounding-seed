@@ -1,5 +1,7 @@
 import json
 
+import pytest
+
 import grounding_seed.ladder as gs_ladder
 from grounding_seed.cli import main
 
@@ -9,10 +11,24 @@ def _force_isolated(monkeypatch):
 
 
 def test_cli_status_reports_connected(tmp_path, capsys):
+    pytest.importorskip("source_resolver")
     rc = main(["--root", str(tmp_path), "status"])
     assert rc == 0
     out = json.loads(capsys.readouterr().out)
     assert out["connected"] is True  # source_resolver ist in dieser Testumgebung installiert
+
+
+def test_cli_status_reports_disconnected(tmp_path, capsys, monkeypatch):
+    import grounding_seed.location as location_mod
+
+    def _no_import(name):
+        raise ImportError("simuliert: nicht installiert")
+
+    monkeypatch.setattr(location_mod.importlib, "import_module", _no_import)
+    rc = main(["--root", str(tmp_path), "status"])
+    assert rc == 0
+    out = json.loads(capsys.readouterr().out)
+    assert out["connected"] is False
 
 
 def test_cli_confirm_then_resolve(tmp_path, capsys, monkeypatch):

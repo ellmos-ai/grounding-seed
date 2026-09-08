@@ -67,6 +67,9 @@ def test_confirm_promotes_to_stufe0(tmp_path, monkeypatch):
 def test_delegates_to_real_source_resolver_when_importable(tmp_path):
     """Kein Force-Isolate hier -- source_resolver ist installiert, muss also
     genutzt werden (kein zweiter Resolver, wenn der echte verfuegbar ist)."""
+    import pytest
+
+    pytest.importorskip("source_resolver")
     store = LocalStore(tmp_path)  # wird bei Delegation gar nicht angefasst
     result = resolve("noch.nie.gesehen.beim.echten.resolver", store=store)
     # Kommt vom ECHTEN source_resolver (dort ohne KNOWN_MODULE_PROVIDERS-Eintrag

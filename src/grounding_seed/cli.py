@@ -82,7 +82,10 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "confirm":
         quelle_path = Path(args.quelle_json)
-        quelle = json.loads(quelle_path.read_text(encoding="utf-8")) if quelle_path.exists() else json.loads(args.quelle_json)
+        if quelle_path.exists():
+            quelle = json.loads(quelle_path.read_text(encoding="utf-8"))
+        else:
+            quelle = json.loads(args.quelle_json)
         entry = confirm(args.rolle, quelle, store=store, stufe_herkunft=args.stufe_herkunft)
         _print(entry.to_dict())
         return 0

@@ -4,13 +4,40 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "grounding-seed"
-version = "0.3.2"
+version = "0.3.3"
 description = "Standalone-Bootstrap-Template fuer isolierte Module/Skills/Repos -- Selbstkenntnis, Suche, eigener Speicher, Nutzerfrage, Selbstversorgung, Migration bei Fund."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "Lukas Geiger" }]
-keywords = ["bootstrap", "standalone", "isolated-module", "self-provisioning", "ellmos"]
+authors = [{ name = "Lukas Geiger", email = "lukas@open-bricks.org" }]
+keywords = ["bootstrap", "standalone", "isolated-module", "self-provisioning", "ellmos", "agentic"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Systems Administration",
+]
+
+[project.urls]
+Homepage = "https://github.com/ellmos-ai/grounding-seed"
+Documentation = "https://github.com/ellmos-ai/grounding-seed#readme"
+Repository = "https://github.com/ellmos-ai/grounding-seed"
+Issues = "https://github.com/ellmos-ai/grounding-seed/issues"
+Changelog = "https://github.com/ellmos-ai/grounding-seed/blob/master/CHANGELOG.md"
+Security = "https://github.com/ellmos-ai/grounding-seed/blob/master/SECURITY.md"
+"Parent Organization" = "https://github.com/ellmos-ai"
+"Umbrella Ecosystem" = "https://github.com/open-bricks"
 
 [project.scripts]
 grounding-seed = "grounding_seed.cli:main"
@@ -25,3 +52,7 @@ testpaths = ["tests"]
 [tool.ruff]
 target-version = "py310"
 line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = []

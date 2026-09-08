@@ -4,6 +4,10 @@ gleiches Stufe/Status-Vokabular, gleiche dialog-Struktur bei Stufe 4. Ohne diese
 Beweis waere "ein Skill verhaelt sich in beiden Betriebsarten gleich" nur eine
 Behauptung, keine getestete Eigenschaft (advisor-Review 2026-08-15)."""
 
+import pytest
+
+pytest.importorskip("source_resolver")
+
 import source_resolver.ladder as sr_ladder
 from source_resolver.ladder import resolve as sr_resolve
 from source_resolver.store import UserSourceStore as SrStore

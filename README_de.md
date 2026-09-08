@@ -2,10 +2,15 @@
 
 # grounding-seed
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![CI: Multi-OS](https://github.com/ellmos-ai/grounding-seed/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/grounding-seed/actions/workflows/ci.yml)
+[![Python: 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Ecosystem: ellmos--ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
-[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%2072%2F72%20Passing-brightgreen.svg)](tests/)
+[![Umbrella: open--bricks](https://img.shields.io/badge/Umbrella-open--bricks-blueviolet.svg)](https://github.com/open-bricks)
+[![Security: Local--First](https://img.shields.io/badge/Security-Local--First-success.svg)](SECURITY.md)
+[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%20Passing-brightgreen.svg)](tests/)
+
+[Schnellstart](#schnellstart) | [Architektur](#fuer-wen-das-hier-ist----in-erster-linie-skills-nicht-module) | [Sicherheitsrichtlinie](SECURITY.md) | [Changelog](CHANGELOG.md) | [LLMs-Kontext](llms.txt) | [English Version](README.md)
 
 > [!NOTE]
 > **LLM/KI-Kontext-Index:** Eine maschinenlesbare Spezifikation für KI-Agenten befindet sich in [`llms.txt`](llms.txt).

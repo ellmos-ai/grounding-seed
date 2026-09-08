@@ -13,6 +13,9 @@ def test_root_is_required_no_global_default(tmp_path):
 
 def test_schema_id_matches_source_resolver_schema():
     """Vorwaertskompatibilitaet: identische Schema-Kennung wie source_resolver.store."""
+    import pytest
+
+    pytest.importorskip("source_resolver")
     from source_resolver.store import SCHEMA_ID as SOURCE_RESOLVER_SCHEMA_ID
     assert SCHEMA_ID == SOURCE_RESOLVER_SCHEMA_ID
 

@@ -6,6 +6,19 @@
   nun den zulässigen Wert `project`, passend zum dokumentierten, vom Aufrufer
   übergebenen projekt-/modullokalen Zustandsroot. 54/54 Tests grün.
 
+## [0.3.3] - 2026-09-08
+
+Pfad-A-Hygiene, CI-Härtung und PEP-621-Standardisierung (GITHUBBOT_ONE_REPO_CLEANER):
+
+- **CI/CD:** Multi-OS GitHub Actions Workflow (`.github/workflows/ci.yml`) mit Matrix für Ubuntu, Windows und macOS über Python 3.10, 3.11, 3.12 und 3.13 inklusive pip-Caching, Ruff-Linting, Bytecode-Kompilierung und Pytest.
+- **PEP 621 Standard-Metadaten:** `pyproject.toml` um standardisierte Classifiers, Autoren-Email, Keywords und kanonische `[project.urls]` (Homepage, Documentation, Repository, Issues, Changelog, Security, Parent Organization, Umbrella Ecosystem) sowie `[tool.ruff.lint]` erweitert.
+- **Sicherheitsrichtlinie:** Zweisprachige `SECURITY.md` (EN/DE) mit 48h-SLA, 5-Tage-Triage-Zusage, Meldewegen und 5 Kerninvarianten (Local-First & Zero Network Egress, Non-Elevation User-Mode, Fail-Closed Receipt Integrity & Terminal Quarantine, Inert Offline Analysis, Resource Scoping).
+- **.gitignore:** Gehärtet gegen Synchronisations- und Merge-Konflikte (`*.sync-conflict-*`, `*-CONFLIT-*`), Lockfiles (`LOCK*.txt`), Caches und Testartefakte.
+- **Linter-Hygiene (Ruff):** Unbenutzter Import `field` in `src/grounding_seed/fertilizer.py` und ungenutzte Zuweisung `confirmed` in `tests/test_fertilizer.py` behoben (vollständig sauber).
+- **Test-Isolationsrobustheit:** Tests, die optionales `source_resolver` erfordern (`test_ladder_parity.py`, `test_store.py`, `test_location.py`, `test_ladder.py`, `test_cli.py`), auf sauberes `pytest.importorskip` umgestellt; neuer Test für getrennten CLI-Status (`test_cli_status_reports_disconnected`) hinzugefügt.
+- **Vertragstests:** Neue Testsuite `tests/test_metadata.py` zur kontinuierlichen Verifikation von PEP 621, CI-Integrität, Versionsparität, Sicherheitsrichtlinie und Navigation.
+- **Dokumentation & Badges:** Shields.io-Badges und zweisprachige Schnellnavigation in `README.md` und `README_de.md` harmonisiert; `llms.txt` aktualisiert.
+
 ## [0.3.2] - 2026-09-06
 
 PR#2-Merge-Nachzug (T-20260906-140331395, Befund merge-reviewer-gs2/Opus beim

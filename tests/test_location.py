@@ -1,8 +1,11 @@
 
+import pytest
+
 from grounding_seed.location import detect_ecosystem
 
 
 def test_detect_ecosystem_connected_when_source_resolver_importable():
+    pytest.importorskip("source_resolver")
     status = detect_ecosystem()
     # source_resolver ist in dieser Testumgebung mitinstalliert (siehe conftest/CI-Setup)
     assert status.connected is True

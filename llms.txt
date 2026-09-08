@@ -2,8 +2,11 @@
 
 > Standalone-Bootstrap-Template for isolated modules/skills/repos: self-knowledge, search, own storage, user question, self-provisioning, migration on find.
 
-Last-checked: 2026-09-06
-Test-suite: 72/72 passed (pytest, Python 3.12, with source_resolver installed)
+Version: 0.3.3
+Last-checked: 2026-09-08
+CI: Multi-OS (Ubuntu, Windows, macOS) Python 3.10-3.13 Matrix
+License: MIT
+Ecosystem: ellmos-ai / open-bricks
 
 ## Summary
 
@@ -16,11 +19,13 @@ Test-suite: 72/72 passed (pytest, Python 3.12, with source_resolver installed)
 - **Primary addressee is the skill, not the module**: a module's environment is largely known in advance (composed via bundle manifest); a skill is distributed into unknown environments and must discover its own sources at runtime.
 - **Local store**: self-provisioned storage when no canonical source is found, with later migration support.
 - **Optional fertilizer (`fertilizer.py`)**: a third, optional connection source -- the user's own usage trace inside the active context window, noticed by the standalone skill `organic-growth@0.1.0` (one-way dependency: grounding-seed recommends it, organic-growth doesn't know grounding-seed exists or call it). An agent running both bridges them itself by calling `record_candidate()`. Recorded as Stage-2/PROPOSED candidates only, never an automatic binding.
+- **Security Invariants**: Local-first & zero network egress, non-elevation user-mode, fail-closed terminal quarantine (`abwehren`).
 
 ## Primary Documentation & References
 
 - [README.md](file:///README.md): Full plant-metaphor structure, relationship to `source-resolver`, standalone-copy rationale.
 - [README_de.md](file:///README_de.md): German translation.
-- [CHANGELOG.md](file:///CHANGELOG.md): Version history, including the 0.2.0 status-contract fix.
+- [SECURITY.md](file:///SECURITY.md): Security policy (48h SLA, vulnerability reporting, and core invariants).
+- [CHANGELOG.md](file:///CHANGELOG.md): Version history and release notes.
 - [pyproject.toml](file:///pyproject.toml): Package metadata, entry point (`grounding-seed` CLI), dependencies.
 - [ellmos-module.v2.json](file:///ellmos-module.v2.json): Module manifest for the ellmos catalog/bundle system.

@@ -1,5 +1,30 @@
+# Python Bytecode & Environments
 __pycache__/
-*.pyc
-.pytest_cache/
+*.py[cod]
+*$py.class
 *.egg-info/
 .venv/
+venv/
+env/
+dist/
+build/
+
+# Testing & Quality Tools
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.wheel-smoke/
+*.tmp
+*.bak
+
+# Cloud Sync & Merge Conflicts
+*.sync-conflict-*
+*.conflict
+*-CONFLIT-*
+* (kopie)*
+* (conflict)*
+
+# Lock files
+LOCK*.txt
+*.lock
