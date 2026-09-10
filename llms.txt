@@ -3,7 +3,7 @@
 > Standalone-Bootstrap-Template for isolated modules/skills/repos: self-knowledge, search, own storage, user question, self-provisioning, migration on find.
 
 Version: 0.3.3
-Last-checked: 2026-09-08
+Last-checked: 2026-09-10
 CI: Multi-OS (Ubuntu, Windows, macOS) Python 3.10-3.13 Matrix
 License: MIT
 Ecosystem: ellmos-ai / open-bricks
@@ -14,6 +14,8 @@ Ecosystem: ellmos-ai / open-bricks
 
 ## Key Features & Architecture
 
+- **Visual Architecture & Lifecycle Flow**: Bilingual READMEs feature Mermaid sequence diagrams and a 10-phase plant lifecycle flowchart.
+- **Dedicated Quickstart**: Vendoring instructions, Python API patterns, and CLI command usage in both English and German.
 - **Ten-phase plant metaphor as structure, not illustration**: the module's sections follow the actual lifecycle phases (root, self-knowledge, discovery, connection, self-provisioning, migration, ...).
 - **No second resolver**: delegates to `source_resolver` when present; the bundled ladder exists only for the isolated case and is contract-verified against it.
 - **Primary addressee is the skill, not the module**: a module's environment is largely known in advance (composed via bundle manifest); a skill is distributed into unknown environments and must discover its own sources at runtime.

@@ -8,9 +8,12 @@
 [![Ecosystem: ellmos--ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella: open--bricks](https://img.shields.io/badge/Umbrella-open--bricks-blueviolet.svg)](https://github.com/open-bricks)
 [![Security: Local--First](https://img.shields.io/badge/Security-Local--First-success.svg)](SECURITY.md)
-[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%20Passing-brightgreen.svg)](tests/)
+[![Dependencies: 0 Zero](https://img.shields.io/badge/dependencies-0%20(zero)-brightgreen.svg)](#schnellstart)
+[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+[![Schema: ellmos--module.v2](https://img.shields.io/badge/schema-ellmos--module.v2-informational.svg)](ellmos-module.v2.json)
+[![Tests: 79 passed](https://img.shields.io/badge/Tests-79%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
 
-[Schnellstart](#schnellstart) | [Architektur](#fuer-wen-das-hier-ist----in-erster-linie-skills-nicht-module) | [Sicherheitsrichtlinie](SECURITY.md) | [Changelog](CHANGELOG.md) | [LLMs-Kontext](llms.txt) | [English Version](README.md)
+[Schnellstart](#schnellstart) | [Architektur & Diagramme](#visuelle-architektur--sequenzdiagramm) | [Metaphern-Phasen](#die-gliederung-ist-die-pflanzenmetapher-nicht-ihre-illustration) | [Sicherheitsrichtlinie](SECURITY.md) | [Changelog](CHANGELOG.md) | [LLMs-Kontext](llms.txt) | [English Version](README.md)
 
 > [!NOTE]
 > **LLM/KI-Kontext-Index:** Eine maschinenlesbare Spezifikation für KI-Agenten befindet sich in [`llms.txt`](llms.txt).
@@ -35,6 +38,59 @@ migrieren -> bei Umgebungswechsel neu suchen. **Kein zweiter Resolver:** wo
 `source_resolver` importierbar ist, delegiert `grounding-seed` vollstaendig dorthin.
 Nur im isolierten Fall laeuft eine mitgebrachte Minimalfassung derselben
 Stufenordnung -- nachweislich formgleich, siehe `tests/test_ladder_parity.py`.
+
+## Schnellstart
+
+### 1. Einbindung in ein isoliertes Projekt
+
+Kopiere `src/grounding_seed/` direkt in dein eigenständiges Repository oder Modul:
+
+```bash
+cp -r src/grounding_seed/ mein_projekt/vendor/grounding_seed/
+```
+
+Oder im Entwicklungsmodus installieren:
+
+```bash
+pip install -e .
+```
+
+### 2. Python-API (Auflösung & lokaler Speicher)
+
+```python
+from pathlib import Path
+from grounding_seed import LocalStore, detect_ecosystem, resolve
+
+# 1. Lokalen Seed-Speicher im Modulverzeichnis initialisieren
+store = LocalStore(Path(__file__).parent / ".grounding-seed")
+
+# 2. Prüfen, ob ellmos-ai Infrastruktur vorhanden ist
+env = detect_ecosystem()
+print(f"Ökosystem angebunden: {env.connected}")
+
+# 3. Rolle auflösen: prüft automatisch LocalStore -> source_resolver -> Fallback-Leiter
+result = resolve("decisions.ledger", store=store)
+print(f"Rollen-Status: {result.status} (Stufe: {result.stage})")
+
+# 4. Lokalen Bereitsteller bestätigen
+store.confirm("decisions.ledger", {"pfad": "data/decisions.json"})
+```
+
+### 3. Kommandozeilenschnittstelle (CLI)
+
+```bash
+# Status und Umgebungsumfeld prüfen
+grounding-seed --root ./.grounding-seed status
+
+# Spezifische Rolle auflösen
+grounding-seed --root ./.grounding-seed resolve decisions.ledger
+
+# Rollendefinition bestätigen
+grounding-seed --root ./.grounding-seed confirm decisions.ledger '{"pfad": "/eigenes/verzeichnis"}'
+
+# PATH nach benötigten Programmen scannen
+grounding-seed --root ./.grounding-seed scan --program ffmpeg
+```
 
 ## Für wen das gedacht ist -- primär für Skills, nicht für Module
 
@@ -68,8 +124,78 @@ Die Faustregel aus dem Connector-Ticket ("was sich beim Kopieren unbemerkt
 auseinanderentwickeln kann, wird nicht kopiert, sondern aufgerufen") gilt fuer
 Skills INNERHALB unseres Systems. Fuer ein isoliertes Repo ist sie falsch: es kann
 nicht aufrufen, was es nicht hat. Dort ist die Kopie kein Fehler, sondern die
-einzige Moeglichkeit -- der Preis wird bewusst bezahlt und klein gehalten (siehe
-Versionsstempel, Abschnitt "Gedaechtnis").
+einzige Moeglichkeit -- der Preis wird bewusst bezahlt und klein gehalten (siehe Versionsstempel, Abschnitt "Gedaechtnis").
+
+## Visuelle Architektur & Sequenzdiagramm
+
+### Auflösung & Lebenszyklus für organisches Wachstum
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Caller as "Aufrufer / Agent Skill"
+    participant GS as "grounding_seed.resolve()"
+    participant Store as "LocalStore (.grounding-seed/)"
+    participant SR as "source_resolver (Oekosystem)"
+    participant Fert as "fertilizer.py (Organisches Wachstum)"
+
+    Caller->>GS: "resolve(role, store=store)"
+    Note over GS: Stufe 0: Lokale Speicherpruefung
+    GS->>Store: "get(role)"
+    alt In LocalStore gefunden
+        Store-->>GS: "ResolutionResult(stage=0, status='found')"
+        GS-->>Caller: "Lokale Konfiguration zurueckgeben"
+    else Nicht im LocalStore
+        Note over GS: Stufe 1: Oekosystem-Delegation
+        GS->>SR: "source_resolver.resolve(role)"
+        alt source_resolver verfuegbar & loest auf
+            SR-->>GS: "ResolutionResult(stage=1, status='found')"
+            GS-->>Caller: "Oekosystem-Komponente zurueckgeben"
+        else Isoliert / nicht gefunden
+            Note over GS: Stufe 2: Gescannter Kandidat
+            GS->>Store: "Vorgeschlagene Kandidaten pruefen"
+            alt Kandidat via fertilizer vorgeschlagen
+                Store-->>GS: "ResolutionResult(stage=2, status='proposed')"
+                GS-->>Caller: "Kandidaten-Vorschlag zurueckgeben"
+            else Stufe 3: Selbstversorgung / Fallback
+                GS-->>Caller: "ResolutionResult(stage=3, status='empty' / 'unavailable')"
+                Note over Caller: Selbst anlegen oder Offline-Leiter nutzen
+            end
+        end
+    end
+
+    opt Beobachtete Nutzung (Organisches Wachstum)
+        Caller->>Fert: "record_candidate(role, provider, source='organic_growth')"
+        Fert->>Store: "Kandidat sichern (Stufe 2)"
+    end
+```
+
+### Die 10 Phasen des Pflanzen-Lebenszyklus
+
+```mermaid
+flowchart TD
+    subgraph Keimung ["Phase 1 - 3: Keimung & Umfeld"]
+        P1["1. Selbstkenntnis (Bedarfsermittlung)"] --> P2["2. Sinne (Modell als Sinnesorgan)"]
+        P2 --> P3["3. Boden (Oekosystem-Erkennung)"]
+    end
+
+    subgraph Versorgung ["Phase 4 - 6: Versorgung & Wachstum"]
+        P3 --> P4["4. Wasser (LocalStore-Persistenz)"]
+        P4 --> P5["5. Naehrstoffe (Scanning & Fertilizer)"]
+        P5 --> P6["6. Licht (Lauf-Trigger / Impuls von aussen)"]
+    end
+
+    subgraph Reife ["Phase 7 - 10: Gedaechtnis & Anpassung"]
+        P6 --> P7["7. Gedaechtnis (Bestaetigte Rollen & Stempel)"]
+        P7 --> P8["8. Umpflanz-Signal (Hostwechsel & Pfaddrift)"]
+        P8 --> P9["9. Ertrag (Bestaendige Einstellungen & Cache)"]
+        P9 --> P10["10. Umpflanzung (Verifizierte Daten-Migration)"]
+    end
+
+    style Keimung fill:#e1f5fe,stroke:#0288d1,stroke-width:1px
+    style Versorgung fill:#e8f5e9,stroke:#388e3c,stroke-width:1px
+    style Reife fill:#fff3e0,stroke:#f57c00,stroke-width:1px
+```
 
 ## Die Gliederung ist die Pflanzenmetapher, nicht ihre Illustration
 

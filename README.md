@@ -8,9 +8,12 @@
 [![Ecosystem: ellmos--ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella: open--bricks](https://img.shields.io/badge/Umbrella-open--bricks-blueviolet.svg)](https://github.com/open-bricks)
 [![Security: Local--First](https://img.shields.io/badge/Security-Local--First-success.svg)](SECURITY.md)
-[![Tests: Pytest](https://img.shields.io/badge/Tests-Pytest%20Passing-brightgreen.svg)](tests/)
+[![Dependencies: 0 Zero](https://img.shields.io/badge/dependencies-0%20(zero)-brightgreen.svg)](#quickstart)
+[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+[![Schema: ellmos--module.v2](https://img.shields.io/badge/schema-ellmos--module.v2-informational.svg)](ellmos-module.v2.json)
+[![Tests: 79 passed](https://img.shields.io/badge/Tests-79%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
 
-[Quickstart](#quickstart) | [Architecture](#who-this-is-for----primarily-skills-not-modules) | [Security Policy](SECURITY.md) | [Changelog](CHANGELOG.md) | [LLMs Context](llms.txt) | [Deutsche Version](README_de.md)
+[Quickstart](#quickstart) | [Architecture & Diagrams](#visual-architecture--sequence-diagram) | [Metaphor Phases](#the-structure-is-the-plant-metaphor-not-its-illustration) | [Security Policy](SECURITY.md) | [Changelog](CHANGELOG.md) | [LLMs Context](llms.txt) | [Deutsche Version](README_de.md)
 
 > [!NOTE]
 > **AI & LLM Integration Notice**: This repository includes an [`llms.txt`](llms.txt) index file tailored for automated context ingestion, agentic system prompts, and LLM code understanding.
@@ -35,6 +38,59 @@ search again on environment change. **No second resolver:** wherever
 `source_resolver` is importable, `grounding-seed` delegates to it fully. Only in
 the isolated case does a bundled minimal version of the same staging order run --
 provably shape-identical, see `tests/test_ladder_parity.py`.
+
+## Quickstart
+
+### 1. Vendoring into an Isolated Project
+
+Copy `src/grounding_seed/` directly into your standalone repository or module:
+
+```bash
+cp -r src/grounding_seed/ my_project/vendor/grounding_seed/
+```
+
+Or install in editable mode for development:
+
+```bash
+pip install -e .
+```
+
+### 2. Python API (Resolution & Local Store)
+
+```python
+from pathlib import Path
+from grounding_seed import LocalStore, detect_ecosystem, resolve
+
+# 1. Initialize local seed store in your module directory
+store = LocalStore(Path(__file__).parent / ".grounding-seed")
+
+# 2. Detect whether ellmos-ai infrastructure is available
+env = detect_ecosystem()
+print(f"Ecosystem connected: {env.connected}")
+
+# 3. Resolve role: checks LocalStore -> source_resolver -> fallback ladder
+result = resolve("decisions.ledger", store=store)
+print(f"Role status: {result.status} (Stage: {result.stage})")
+
+# 4. Confirm a local provider
+store.confirm("decisions.ledger", {"pfad": "data/decisions.json"})
+```
+
+### 3. Command Line Interface (CLI)
+
+```bash
+# Check status and environment
+grounding-seed --root ./.grounding-seed status
+
+# Resolve a specific role
+grounding-seed --root ./.grounding-seed resolve decisions.ledger
+
+# Confirm a role definition
+grounding-seed --root ./.grounding-seed confirm decisions.ledger '{"pfad": "/own/place"}'
+
+# Scan PATH for required tools
+grounding-seed --root ./.grounding-seed scan --program ffmpeg
+```
 
 ## Who this is for -- primarily skills, not modules
 
@@ -67,6 +123,77 @@ copied is not copied, but called") applies to skills WITHIN our system. For an
 isolated repo it's wrong: it can't call what it doesn't have. There, the copy
 isn't a mistake but the only option -- the price is paid deliberately and kept
 small (see version stamp, "Memory" section).
+
+## Visual Architecture & Sequence Diagram
+
+### Resolution & Organic Growth Lifecycle
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Caller as "Caller / Agent Skill"
+    participant GS as "grounding_seed.resolve()"
+    participant Store as "LocalStore (.grounding-seed/)"
+    participant SR as "source_resolver (Ecosystem)"
+    participant Fert as "fertilizer.py (Organic Growth)"
+
+    Caller->>GS: "resolve(role, store=store)"
+    Note over GS: Stage 0: Local Store Check
+    GS->>Store: "get(role)"
+    alt Found in LocalStore
+        Store-->>GS: "ResolutionResult(stage=0, status='found')"
+        GS-->>Caller: "Return local configuration"
+    else Not in LocalStore
+        Note over GS: Stage 1: Ecosystem Delegation
+        GS->>SR: "source_resolver.resolve(role)"
+        alt source_resolver available & resolves
+            SR-->>GS: "ResolutionResult(stage=1, status='found')"
+            GS-->>Caller: "Return ecosystem component"
+        else Isolated / not found
+            Note over GS: Stage 2: Scanned Candidate
+            GS->>Store: "inspect proposed candidates"
+            alt Candidate proposed via fertilizer
+                Store-->>GS: "ResolutionResult(stage=2, status='proposed')"
+                GS-->>Caller: "Return candidate suggestion"
+            else Stage 3: Self-provisioning / Fallback
+                GS-->>Caller: "ResolutionResult(stage=3, status='empty' / 'unavailable')"
+                Note over Caller: Self-provision or run offline ladder
+            end
+        end
+    end
+
+    opt Usage Trace Observation (Organic Growth)
+        Caller->>Fert: "record_candidate(role, provider, source='organic_growth')"
+        Fert->>Store: "persist proposed candidate (Stage 2)"
+    end
+```
+
+### The 10 Plant Metaphor Phases
+
+```mermaid
+flowchart TD
+    subgraph Germination ["Phase 1 - 3: Germination & Environment"]
+        P1["1. Self-Knowledge (Need Assessment)"] --> P2["2. Sensing (Model Sensory Input)"]
+        P2 --> P3["3. Soil (Ecosystem Detection)"]
+    end
+
+    subgraph Sustenance ["Phase 4 - 6: Sustenance & Growth"]
+        P3 --> P4["4. Water (LocalStore Persistence)"]
+        P4 --> P5["5. Nutrients (Scanning & Fertilizer)"]
+        P5 --> P6["6. Light (Run Trigger / External Impulse)"]
+    end
+
+    subgraph Maturity ["Phase 7 - 10: Memory & Adaptation"]
+        P6 --> P7["7. Memory (Confirmed Roles & Stamps)"]
+        P7 --> P8["8. Transplant Check (Hostname & Path Shift)"]
+        P8 --> P9["9. Return (Durable Settings & Cache)"]
+        P9 --> P10["10. Migration (Verified Target Transfer)"]
+    end
+
+    style Germination fill:#e1f5fe,stroke:#0288d1,stroke-width:1px
+    style Sustenance fill:#e8f5e9,stroke:#388e3c,stroke-width:1px
+    style Maturity fill:#fff3e0,stroke:#f57c00,stroke-width:1px
+```
 
 ## The structure IS the plant metaphor, not its illustration
 
