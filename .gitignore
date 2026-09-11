@@ -8,23 +8,40 @@ venv/
 env/
 dist/
 build/
+wheelhouse/
+.eggs/
 
 # Testing & Quality Tools
 .pytest_cache/
 .ruff_cache/
+.mypy_cache/
+.tox/
 .coverage
 htmlcov/
 .wheel-smoke/
 *.tmp
 *.bak
 
-# Cloud Sync & Merge Conflicts
+# Multi-Host Cloud Sync & Merge Conflicts
 *.sync-conflict-*
+*-conflict-*
 *.conflict
 *-CONFLIT-*
 * (kopie)*
-* (conflict)*
+* (copy)*
+*-[0-9].*
+*.[0-9].*
+*-WORKSTATION-LG*
+*-ASUS-GEI*
 
-# Lock files
-LOCK*.txt
+# Multi-Agent Lock Files
+LOCK*
 *.lock
+LOCK.*
+
+# Editor & Temporary Files
+*.swp
+*.swo
+*~
+*.log
+

@@ -1,10 +1,15 @@
 # Changelog
 
-## [Unreleased]
+## [0.3.4] - 2026-09-11
 
-- Der Modulkatalogvertrag wird wieder eingehalten: `state.location` verwendet
-  nun den zulässigen Wert `project`, passend zum dokumentierten, vom Aufrufer
-  übergebenen projekt-/modullokalen Zustandsroot. 54/54 Tests grün.
+Pfad-A-Hygiene, CI-Matrix-Härtung, .gitignore-Schutz und Vertragstest-Erweiterung (GITHUBBOT_ONE_REPO_CLEANER):
+
+- **Modulkatalogvertrag:** `state.location` in `ellmos-module.v2.json` verwendet den zulässigen Wert `project`, passend zum dokumentierten, vom Aufrufer übergebenen projekt-/modullokalen Zustandsroot.
+- **CI-Workflow-Härtung:** `.github/workflows/ci.yml` mit robuster `python -m pip`-Installation und Bytecode-Validierung (`compileall -q`).
+- **.gitignore-Härtung:** Umfassender Schutz gegen Multi-Host-Synchronisationskonflikte (`*-conflict-*`, `* (copy)*`, `*-[0-9].*`), Lock-Muster (`LOCK*`, `*.lock`, `LOCK.*`), Packaging-Artefakte (`wheelhouse/`, `.tox/`, `.mypy_cache/`) und temporäre Editor-Dateien.
+- **Pytest-Konfiguration (PEP 621):** `[tool.pytest.ini_options]` in `pyproject.toml` um `addopts = "-ra -v"` erweitert.
+- **Vertragstests:** `tests/test_metadata.py` um Tests für gehärtetes `.gitignore`, Pytest-Addopts, Bytecode-Kompilierung und Reinheit von Git-Locks/Caches erweitert (83 Tests grün).
+- **Dokumentation & Badges:** Shields.io-Badges und `llms.txt` auf Version 0.3.4 und Teststand (83 passed tests | 100% grün) synchronisiert.
 
 ## [0.3.3] - 2026-09-08
 

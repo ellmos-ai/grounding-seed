@@ -11,7 +11,7 @@
 [![Dependencies: 0 Zero](https://img.shields.io/badge/dependencies-0%20(zero)-brightgreen.svg)](#schnellstart)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Schema: ellmos--module.v2](https://img.shields.io/badge/schema-ellmos--module.v2-informational.svg)](ellmos-module.v2.json)
-[![Tests: 79 passed](https://img.shields.io/badge/Tests-79%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
+[![Tests: 83 passed](https://img.shields.io/badge/Tests-83%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
 
 [Schnellstart](#schnellstart) | [Architektur & Diagramme](#visuelle-architektur--sequenzdiagramm) | [Metaphern-Phasen](#die-gliederung-ist-die-pflanzenmetapher-nicht-ihre-illustration) | [Sicherheitsrichtlinie](SECURITY.md) | [Changelog](CHANGELOG.md) | [LLMs-Kontext](llms.txt) | [English Version](README.md)
 

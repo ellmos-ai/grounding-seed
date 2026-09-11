@@ -2,8 +2,8 @@
 
 > Standalone-Bootstrap-Template for isolated modules/skills/repos: self-knowledge, search, own storage, user question, self-provisioning, migration on find.
 
-Version: 0.3.3
-Last-checked: 2026-09-10
+Version: 0.3.4
+Last-checked: 2026-09-11
 CI: Multi-OS (Ubuntu, Windows, macOS) Python 3.10-3.13 Matrix
 License: MIT
 Ecosystem: ellmos-ai / open-bricks

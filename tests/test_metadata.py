@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import compileall
+import json
 import re
+import subprocess
 from pathlib import Path
 
 import tomllib
@@ -104,9 +107,67 @@ def test_gitignore_hardening_patterns():
 
     content = gi_file.read_text(encoding="utf-8")
     assert "*.sync-conflict-*" in content
-    assert "LOCK*.txt" in content
+    assert "*-conflict-*" in content
+    assert "LOCK*" in content
     assert ".pytest_cache" in content
     assert ".ruff_cache" in content
+    assert ".mypy_cache" in content
+    assert "wheelhouse/" in content
+
+
+def test_pytest_ini_options_hardened():
+    """pyproject.toml must configure hardened pytest options."""
+    pyproject_path = ROOT / "pyproject.toml"
+    data = tomllib.loads(pyproject_path.read_text(encoding="utf-8"))
+    pytest_cfg = data.get("tool", {}).get("pytest", {}).get("ini_options", {})
+
+    assert "-ra" in pytest_cfg.get("addopts", "")
+    assert "-v" in pytest_cfg.get("addopts", "")
+    assert pytest_cfg.get("pythonpath") == ["src"]
+    assert pytest_cfg.get("testpaths") == ["tests"]
+
+
+def test_no_tracked_locks_or_temporary_files():
+    """Repository git index must not track locks, compiled bytecode or temporary files."""
+    try:
+        tracked = subprocess.run(
+            ["git", "ls-files"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.splitlines()
+    except Exception:
+        return  # Skip gracefully in environments without git cli
+
+    for item in tracked:
+        item_lower = item.lower()
+        assert not Path(item).name.startswith("LOCK"), f"Tracked lock file found: {item}"
+        assert not item_lower.endswith(".pyc"), f"Tracked bytecode file found: {item}"
+        assert not item_lower.endswith(".tmp"), f"Tracked temporary file found: {item}"
+        assert not item_lower.endswith(".bak"), f"Tracked backup file found: {item}"
+        assert "__pycache__" not in item, f"Tracked cache directory found: {item}"
+
+
+def test_clean_bytecode_compilation():
+    """All source and test python files must compile without syntax errors."""
+    src_res = compileall.compile_dir(str(ROOT / "src"), quiet=1)
+    test_res = compileall.compile_dir(str(ROOT / "tests"), quiet=1)
+    assert src_res is True, "Source tree failed bytecode compilation"
+    assert test_res is True, "Test tree failed bytecode compilation"
+
+
+def test_module_manifest_v2_strict_schema():
+    """ellmos-module.v2.json must satisfy core contract expectations."""
+    manifest_file = ROOT / "ellmos-module.v2.json"
+    assert manifest_file.is_file(), "ellmos-module.v2.json must exist"
+
+    manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
+    assert manifest.get("schema") == "ellmos.module.v2"
+    assert manifest.get("id") == "grounding-seed"
+    assert manifest.get("status") == "active"
+    assert manifest.get("boundaries", {}).get("network") == "none"
+    assert manifest.get("boundaries", {}).get("data") == "user-local"
 
 
 def test_readme_bilingual_navigation_and_links():
