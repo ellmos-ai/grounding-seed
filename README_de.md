@@ -1,4 +1,5 @@
 <img src="assets/banner.png" width="100%" alt="grounding-seed Banner">
+<!-- alternate banner: assets/banner-b.png (swap on occasion) -->
 
 # grounding-seed
 
