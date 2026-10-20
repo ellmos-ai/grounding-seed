@@ -8,9 +8,12 @@ import re
 import subprocess
 from pathlib import Path
 
-import tomllib
-
 import grounding_seed
+
+try:
+    import tomllib
+except ModuleNotFoundError:
+    import tomli as tomllib
 
 ROOT = Path(__file__).resolve().parent.parent
 
